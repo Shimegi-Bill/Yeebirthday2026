@@ -12,7 +12,7 @@
 <link rel="manifest" href="manifest.json">
 <title>雞髀大胃王 · 跑去抱媽咪</title>
 <!-- 上載前一定要改版本號（日期-次數），手機先會自動攞新版 -->
-<script>window.__GB_VER='2026-11-10-5';</script>
+<script>window.__GB_VER='2026-11-10-6';</script>
 <style>
 :root{--app-h:100vh;--pink:#ff5c8a;--pink2:#ff8fb1;--ink:#5a3b2e;--soft:#8a5a44}
 *{box-sizing:border-box;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
@@ -130,7 +130,7 @@ body{font-family:-apple-system,"PingFang HK","PingFang TC","Noto Sans CJK TC","N
       <div class="ribbon">🎂 二家姐生日快樂 🎂</div>
       <ul class="how">
         <li><span class="ic">👆</span><span>手指<b>拖住雞髀</b>，左右前後咁行</span></li>
-        <li><span class="ic">🍓</span><span>食跌落嚟嘅好嘢 <b>+10</b>，連續食分更多；🎂 <b>+50</b></span></li>
+        <li><span class="ic">🍓</span><span>食跌落嚟嘅好嘢 <b>+10</b>，連續食分更多；🎂 <b>+50</b>；✨金光雞髀 <b>+100</b></span></li>
         <li><span class="ic">💣</span><span>避開<b class="bad">炸彈 −50</b>（會暈）同<b class="bad">屎 💩 −30</b>（會行慢）</span></li>
         <li><span class="ic">👣</span><span>食得多就會<b>由爬變行，再變跑</b></span></li>
         <li><span class="ic">🍗</span><span><b>最後 10 秒落食物雨</b>（仲有好多屎 💩）</span></li>
@@ -210,16 +210,16 @@ const FOODS=[
   {e:'🍪',n:'餅乾',c:'#c98a4b'},{e:'🍮',n:'布甸',c:'#f4a23c'},{e:'🍼',n:'奶奶',c:'#7ad3ff'},{e:'🍗',n:'雞髀',c:'#d9822b'},
   {e:'🍙',n:'飯糰',c:'#ffffff'},{e:'🥚',n:'蛋蛋',c:'#f3d6b0'},{e:'🍊',n:'橙',c:'#ff9f1c'}
 ];
-const BONUS={e:'🎂',n:'生日蛋糕',c:'#ff8fb1'};
+const BONUS={e:'🎂',n:'生日蛋糕',c:'#ff8fb1'},GOLD={e:'🍗',n:'金雞髀',c:'#ffd23f'};
 const DRUM=FOODS.find(f=>f.e==='🍗'),OTHER=FOODS.filter(f=>f!==DRUM),DRUM_RATE=.42;   // 雞髀最鍾意食雞髀：42% 係 🍗
 function pickFood(){return Math.random()<DRUM_RATE?DRUM:pick(OTHER)}
-const PTS={food:10,cake:50,bomb:-50,poop:-30};   // 分數：好嘢、蛋糕、炸彈、屎
+const PTS={food:10,cake:50,gold:100,bomb:-50,poop:-30};   // 分數：好嘢、蛋糕、金光雞髀（最高分）、炸彈、屎
 const HAZ={bomb:{e:'💣',n:'炸彈'},poop:{e:'💩',n:'屎'}};
 const HAZ_RATE=[.24,.34,.44];                     // 每次跌嘢係扣分物品嘅機會（爬、行、跑）
 const STAGES=[
-  {name:'BB 爬爬',icon:'🍼',speed:4,  steer:7, cad:1.6,spawn:.8, z0:22},
-  {name:'學行行', icon:'👣',speed:7.2,steer:10,cad:2.2,spawn:.66,z0:30},
-  {name:'跑跑跑', icon:'💨',speed:12, steer:14,cad:3.4,spawn:.5, z0:40}
+  {name:'BB 爬爬',icon:'🍼',speed:4,  steer:7, cad:1.05,spawn:.8, z0:16},
+  {name:'學行行', icon:'👣',speed:7.2,steer:10,cad:2.2,spawn:.66,z0:23},
+  {name:'跑跑跑', icon:'💨',speed:12, steer:14,cad:3.4,spawn:.5, z0:31}
 ];
 
 /* ---- 禁止雙指放大、雙擊放大、長按選單 ---- */
@@ -363,14 +363,14 @@ function topHeightAt(z){return camH+horizonY/sAt(z)}
 const sprCache={};
 /* 扣分物品嘅紅光：將 emoji 變做紅色剪影，再四周擴開同模糊，做成跟住外形嘅光邊 */
 const glowCache={};
-function glowSpr(ch){
-  if(glowCache[ch])return glowCache[ch];
+function glowSpr(ch,col){
+  col=col||'#ff1e1e';const key=ch+col;if(glowCache[key])return glowCache[key];
   const base=spr(ch),pad=20,sil=document.createElement('canvas');sil.width=base.width;sil.height=base.height;
-  const sg=sil.getContext('2d');sg.drawImage(base,0,0);sg.globalCompositeOperation='source-in';sg.fillStyle='#ff1e1e';sg.fillRect(0,0,sil.width,sil.height);
+  const sg=sil.getContext('2d');sg.drawImage(base,0,0);sg.globalCompositeOperation='source-in';sg.fillStyle=col;sg.fillRect(0,0,sil.width,sil.height);
   const c=document.createElement('canvas');c.width=c.height=base.width+pad*2;const g=c.getContext('2d');
-  g.shadowColor='rgba(255,0,0,.95)';g.shadowBlur=12;
+  g.shadowColor=col;g.shadowBlur=12;
   for(let i=0;i<16;i++){const a=i/16*TAU;g.drawImage(sil,pad+Math.cos(a)*8,pad+Math.sin(a)*8)}
-  return glowCache[ch]=c;
+  return glowCache[key]=c;
 }
 function spr(ch){
   if(sprCache[ch])return sprCache[ch];
@@ -391,7 +391,7 @@ let stepSign=0;
 const foods=[],decos=[],flags=[],parts=[],pops=[],confetti=[],clouds=[],skyBal=[];
 let decoNext=-3,flagNext=14,flagType=0,dustT=0;
 let eaten=0,score=0,bombs=0,poops=0,combo=0,lastEat=-9,spawnT=1,bonusT=9,bestScore=+(LS.get('gb-best-score')||0);
-let shake=0,flashRed=false,stinkT=0,rain=false,rainT=0;
+let shake=0,flashRed=false,stinkT=0,rain=false,rainT=0,goldT=6;
 let mom=null,fin=null,cd=null,zoom=1,zE=0,endShown=false;
 let drag=null,dragDist=0,hintOn=false,flashA=0,lastTick=99,autoPilot=false,hudDirty=true;
 const photos={kid:null,mom:null};
@@ -408,15 +408,16 @@ function spawnDeco(z){for(const sd of [-1,1]){if(Math.random()<.22)continue;cons
 
 /* ---- 食物 ---- */
 // kind：冇／false ＝ 好嘢；true ＝ 生日蛋糕；'bomb'／'poop' ＝ 扣分物品
+// kind：冇／false ＝ 好嘢；true ＝ 生日蛋糕；'gold' ＝ 金光雞髀；'bomb'／'poop' ＝ 扣分物品；g ＝ 重力（食物雨慢啲）
 function spawnFood(x,z,kind,g){
-  const bonus=kind===true,haz=typeof kind==='string'?kind:null,f=haz?HAZ[haz]:bonus?BONUS:pickFood();
+  const gold=kind==='gold',bonus=kind===true,haz=typeof kind==='string'&&!gold?kind:null,f=gold?GOLD:haz?HAZ[haz]:bonus?BONUS:pickFood();
   foods.push({f,x:clamp(x,-XLIM,XLIM),z,h:topHeightAt(z)+rand(.5,3),vh:-rand(1,4),b:0,st:0,rot:rand(-.4,.4),vr:rand(-3,3),a:1,sq:0,
-    sz:bonus?1.25:haz?1.05:1,bonus,haz,t:0,k:1,g:g||G});
+    sz:gold?1.3:bonus?1.25:haz?1.05:1,bonus,haz,gold,t:0,k:1,g:g||G,bn:g?.14:.28});
 }
 /* 自動調難度：而家分數比「應有分數」高就難啲，低就易啲，令最後分數大約 500–1500
-   應有分數（一半認真玩）：頭 30 秒每秒 15 分（450），最後 10 秒食物雨每秒 28 分（+280）＝ 730 */
-function expectScore(t){const t0=CFG.DURATION-CFG.RAIN_AT;return t<=t0?t*15:t0*15+(t-t0)*28}
-function dda(){if(state!=='play')return 0;const d=(score-expectScore(CFG.DURATION-timeLeft))/420;return clamp(d>0?d*.55:d,-1,1)}   // 叻嘅人罰得輕啲
+   應有分數（一半認真玩）：頭 30 秒每秒 14 分（420），最後 10 秒食物雨每秒 26 分（+260）＝ 680 */
+function expectScore(t){const t0=CFG.DURATION-CFG.RAIN_AT;return t<=t0?t*14:t0*14+(t-t0)*26}
+function dda(){if(state!=='play')return 0;const d=(score-expectScore(CFG.DURATION-timeLeft))/420;return clamp(d>0?d*.8:d,-1,1)}   // 叻嘅人罰得輕少少
 // 好嘢多數跌喺離雞髀遠啲嘅位（要拖先食到）；分數低就多啲跌埋雞髀身邊
 function aimX(){const d=dda(),near=d<0?.1-d*.22:.1*(1-d);if(Math.random()<near)return p.x+rand(-1.2,1.2);
   if(Math.random()<.12)return rand(-XLIM,XLIM);let x=0;for(let i=0;i<6;i++){x=rand(-XLIM,XLIM);if(Math.abs(x-p.x)>1.1)break}return x}
@@ -441,14 +442,15 @@ function eat(f){
   const sp=proj(p.x,headH()+.3,p.z);if(!sp)return;
   for(let i=0;i<7;i++)addPart({type:'dot',x:sp.x,y:sp.y,vx:rand(-90,90),vy:rand(-170,-40),g:420,life:rand(.35,.6),max:.6,r:rand(2,4),col:pick(['#ffd23f','#ff9f43','#ff6b81','#ffffff'])});
   if(state!=='play')return;
-  eaten+=f.bonus?3:1;combo=(tGame-lastEat<1.2)?combo+1:1;lastEat=tGame;
-  const pts=f.bonus?PTS.cake:PTS.food*(combo>=6?3:combo>=3?2:1);addScore(pts);
-  SFX.chomp(combo);if(f.bonus)SFX.bonus();
+  eaten+=f.bonus||f.gold?3:1;combo=(tGame-lastEat<1.2)?combo+1:1;lastEat=tGame;
+  const pts=f.gold?PTS.gold:f.bonus?PTS.cake:PTS.food*(combo>=6&&!rain?3:combo>=3?2:1);addScore(pts);   // 食物雨入面連續食最多 ×2
+  SFX.chomp(combo);if(f.bonus||f.gold)SFX.bonus();
+  if(f.gold){flashA=.25;flashRed=false;for(let i=0;i<12;i++){const a=i/12*TAU;addPart({type:'spr',ch:i%2?'⭐':'✨',x:sp.x,y:sp.y,vx:Math.cos(a)*rand(90,170),vy:Math.sin(a)*rand(90,170)-40,g:160,life:.8,max:.8,size:rand(14,20),rot:0,vr:rand(-3,3)})}}
   addPart({type:'spr',ch:'✨',x:sp.x+rand(-14,14),y:sp.y-6,vx:0,vy:-40,g:0,life:.5,max:.5,size:22,rot:0,vr:0});
   addPart({type:'ring',x:sp.x,y:sp.y,vx:0,vy:0,g:0,life:.35,max:.35,r0:sp.s*.1,r1:sp.s*.7,w:3,col:f.f.c||'#ffd23f'});
   for(let i=0;i<5;i++)addPart({type:'dot',x:sp.x,y:sp.y,vx:rand(-120,120),vy:rand(-150,-30),g:380,life:rand(.3,.55),max:.55,r:rand(2,3.5),col:f.f.c||'#ffd23f'});
-  addPop(sp.x,sp.y-14,f.bonus?'🎂 生日蛋糕！+'+pts:f===DRUM?'雞髀😋 +'+pts:f.f.n+'！+'+pts,f.bonus?'#d6246a':'#e8590c',f.bonus||f===DRUM?23:20);
-  if(combo===3||combo===6||(combo>=10&&combo%5===0))addPop(sp.x,sp.y-14,'連續食 ×'+combo+(combo>=6?'！每樣 30 分':combo>=3?'！每樣 20 分':'！'),'#5f3dc4',18);
+  addPop(sp.x,sp.y-14,f.gold?'✨ 金雞髀！+'+pts:f.bonus?'🎂 生日蛋糕！+'+pts:f.f===DRUM?'雞髀😋 +'+pts:f.f.n+'！+'+pts,f.gold?'#c98a00':f.bonus?'#d6246a':'#e8590c',f.gold?27:f.bonus||f.f===DRUM?23:20);
+  if(combo===3||combo===6||(combo>=10&&combo%5===0))addPop(sp.x,sp.y-14,'連續食 ×'+combo+(combo>=6&&!rain?'！每樣 30 分':combo>=3?'！每樣 20 分':'！'),'#5f3dc4',18);
   checkEvolve();hudDirty=true;
 }
 function addScore(v){
@@ -491,7 +493,7 @@ function evolve(n,msg){
 function resetGame(){
   foods.length=0;parts.length=0;pops.length=0;confetti.length=0;
   eaten=0;score=0;bombs=0;poops=0;combo=0;lastEat=-9;tGame=0;timeLeft=CFG.DURATION;shake=0;
-  Object.assign(p,{x:0,z:.8,tx:0,tz:.8,stage:0,chomp:0,glow:0,lean:0,vx:0,stun:0,slow:0,inv:0,face:0,yaw:0});anim.mode='crawl';anim.t=1;anim.from=null;rain=false;rainT=0;Music.boost=1;
+  Object.assign(p,{x:0,z:.8,tx:0,tz:.8,stage:0,chomp:0,glow:0,lean:0,vx:0,stun:0,slow:0,inv:0,face:0,yaw:0});anim.mode='crawl';anim.t=1;anim.from=null;rain=false;rainT=0;goldT=rand(6,9);Music.boost=1;
   speed=0;spawnT=.6;bonusT=rand(8,11);mom=null;fin=null;cd=null;zoom=1;zE=0;endShown=false;lastTick=99;dragDist=0;drag=null;
   Music.stage=0;hudDirty=true;flashA=0;
 }
@@ -597,18 +599,19 @@ function updPlay(dt){
   tGame+=dt;timeLeft-=dt;const st=STAGES[p.stage];
   if(timeLeft>1){
     if(!rain&&timeLeft<=CFG.RAIN_AT){rain=true;rainT=0;banner('最後 10 秒！食物雨！🍗');SFX.whistle();Music.boost=1.15;flashA=.3;flashRed=false}
-    if(rain){rainT-=dt;if(rainT<=0){rainT=.08;const pr=clamp(.36+.22*dda(),.2,.55),z=rand(30,50);   // 食物雨：慢慢飄落、好密
+    if(rain){rainT-=dt;if(rainT<=0){const d=dda();rainT=clamp(.12*(1+.6*d),.08,.22);const pr=clamp(.45+.25*d,.25,.7),z=rand(22,40);   // 食物雨：慢慢飄落、好密
       if(Math.random()<pr)spawnFood(Math.random()<.4?p.x+rand(-1,1):rand(-XLIM,XLIM),z,'poop',rand(12,18));
-      else spawnFood(rand(-XLIM,XLIM),z,Math.random()<.04,rand(12,18))}}
+      else{const r=Math.random();spawnFood(rand(-XLIM,XLIM),z,r<.006?'gold':r<.03,rand(12,18))}}}
     else{spawnT-=dt;if(spawnT<=0){spawnWave();spawnT=st.spawn*rand(.85,1.2)*(1+.25*dda())}}
     bonusT-=dt;if(bonusT<=0){spawnFood(rand(-2,2),st.z0+rand(-2,2),true);bonusT=dda()<-.3?rand(6,9):rand(9,13)}
+    goldT-=dt;if(goldT<=0){let x=0;for(let i=0;i<8;i++){x=rand(-XLIM,XLIM);if(Math.abs(x-p.x)>1.5)break}spawnFood(x,st.z0+rand(0,5),'gold');goldT=rand(11,15)}   // 金雞髀：少、喺遠處，要拖先食到
   }
   const sec=Math.ceil(timeLeft);if(sec<=5&&sec>=1&&sec!==lastTick){lastTick=sec;SFX.tick()}
   if(hintOn&&(dragDist>40||tGame>7))hintOn=false;
   if(timeLeft<=0){timeLeft=0;startFinale()}
 }
 let attractSpawn=1;
-function updAttract(dt){attractSpawn-=dt;if(attractSpawn<=0){attractSpawn=rand(1,1.6);spawnFood(rand(-2,2),22)}}
+function updAttract(dt){attractSpawn-=dt;if(attractSpawn<=0){attractSpawn=rand(1,1.6);spawnFood(rand(-2,2),16)}}
 function updFinale(dt){
   fin.t+=dt;
   if(fin.phase===0){
@@ -670,7 +673,7 @@ function updateFoods(dt){
     if(f.st===2){f.t+=dt;const e=Math.min(1,f.t/.18);f.x=lerp(f.x,p.x,e);f.z=lerp(f.z,p.z,e);f.h=lerp(f.h,headH(),e);f.k=1-e;continue}
     f.z-=dz;
     if(f.h>0||f.vh>0){f.vh-=f.g*dt;f.h+=f.vh*dt;f.rot+=f.vr*dt;
-      if(f.h<=0){f.h=0;if(f.b<2&&f.vh<-3){f.vh=-f.vh*.36;f.b++;f.sq=1}else f.vh=0;f.vr*=.4}}
+      if(f.h<=0){f.h=0;if(f.b<(f.g<G?1:2)&&f.vh<-3){f.vh=-f.vh*f.bn;f.b++;f.sq=1}else f.vh=0;f.vr*=.4}}
     else f.rot=lerp(f.rot,0,Math.min(1,dt*3));
     if(f.sq>0)f.sq=Math.max(0,f.sq-dt*5);
     if(fin)f.a-=dt*1.6;
@@ -747,14 +750,16 @@ function P_run(ph){
 /* 爬：個身打橫（頸喺盤骨前面 34），對角手腳一齊郁（左手同右膝頭），
    手提起向前再按落地，膝頭向前拖，腳板底向住鏡頭；屁股擰、個身左右搖 */
 function P_crawl(ph){
-  const s=Math.sin(ph),s2=Math.sin(ph*2),o=baseStand(0);
-  Object.assign(o,{px:s*3,py:28+s2*1.5,pz:0,nx:s*2,ny:40+Math.sin(ph*2+1)*1.5,nz:40,hx:s*3.5,hy:52+s2*2,hz:60,
-    hr:30,sw:19,hw:11,tw:1.05,hb:1,pr:s*.13,rot:s*.06,hem:s*2});
+  // 2026-11-10 第六版：Bill 話「上半身要爬慢啲，而家好似得隻腳爬」→ 上身做主角：重心慢慢左右移，
+  // 伸手嗰邊膊頭沉低、個頭點一點；手提高、伸遠再按落地；腳嘅幅度細啲
+  const s=Math.sin(ph),c=Math.cos(ph),dip=(1-Math.cos(ph*2))/2,o=baseStand(0);
+  Object.assign(o,{px:s*4,py:28+dip*1.5,pz:0,nx:s*7,ny:40-dip*3,nz:40+dip*2,hx:s*8,hy:53-dip*4,hz:61+dip*3,
+    hr:30,sw:19,hw:11,tw:1.05,hb:1,pr:s*.15,rot:s*.11,hem:s*3});
   for(const i of [0,1]){const sd=i?1:-1,th=ph+(i?Math.PI:0),tk=th+Math.PI,lift=Math.max(0,Math.cos(th)),kl=Math.max(0,Math.cos(tk));
-    o['a'+i+'x']=sd*35;o['a'+i+'y']=7*lift;o['a'+i+'z']=56+10*Math.sin(th);
-    o['e'+i+'x']=sd*33;o['e'+i+'y']=19+lift*4;o['e'+i+'z']=(40+o['a'+i+'z'])/2+3;
-    o['k'+i+'x']=sd*15;o['k'+i+'y']=3*kl;o['k'+i+'z']=8+8*Math.sin(tk);
-    o['f'+i+'x']=sd*10;o['f'+i+'y']=7+2*kl;o['f'+i+'z']=-17+6*Math.sin(tk);o['s'+i]=1}
+    o['a'+i+'x']=sd*(37+lift*4)+s*4;o['a'+i+'y']=15*lift;o['a'+i+'z']=58+15*Math.sin(th);
+    o['e'+i+'x']=sd*(38+lift*7)+s*5;o['e'+i+'y']=21+lift*11;o['e'+i+'z']=(40+o['a'+i+'z'])/2+2;
+    o['k'+i+'x']=sd*15;o['k'+i+'y']=2*kl;o['k'+i+'z']=8+5*Math.sin(tk);
+    o['f'+i+'x']=sd*10;o['f'+i+'y']=7+1.5*kl;o['f'+i+'z']=-17+4*Math.sin(tk);o['s'+i]=1}
   return o;
 }
 /* 抱：雙手攬住媽咪膊頭（雞髀喺媽咪左邊少少，所以左右手位置唔同），雙腳喺半空踢 */
@@ -1104,7 +1109,12 @@ function drawFood(f){
   ctx.save();ctx.translate(sp.x,sp.y);ctx.rotate(f.rot);if(f.sq>0)ctx.scale(1+f.sq*.25,1-f.sq*.25);
   if(f.haz&&f.st!==2){const pl=.5+.5*Math.sin(T*16),gs=glowSpr(f.f.e),k=size*1.25/spr(f.f.e).width,w=gs.width*k*(1+.05*pl);   // 紅光跟住圖案外形
     ctx.globalAlpha=clamp(f.a,0,1)*(.3+.7*pl);ctx.drawImage(gs,-w/2,-w/2,w,w);ctx.globalAlpha=clamp(f.a,0,1)}
-  ctx.drawImage(spr(f.f.e),-size*.625,-size*.625,size*1.25,size*1.25);ctx.restore();
+  if(f.gold&&f.st!==2){const pl=.5+.5*Math.sin(T*7),gs=glowSpr(f.f.e,'#ffc400'),k=size*1.25/spr(f.f.e).width,w=gs.width*k*(1.04+.08*pl);   // 金光跟住雞髀外形
+    ctx.globalAlpha=clamp(f.a,0,1)*(.65+.35*pl);ctx.drawImage(gs,-w/2,-w/2,w,w);ctx.globalAlpha=clamp(f.a,0,1)}
+  ctx.drawImage(spr(f.f.e),-size*.625,-size*.625,size*1.25,size*1.25);
+  if(f.gold&&f.st!==2){ctx.globalCompositeOperation='lighter';ctx.globalAlpha=clamp(f.a,0,1)*(.25+.2*Math.sin(T*7));ctx.drawImage(glowSpr(f.f.e,'#ffe066'),-size*.625-20*size*1.25/spr(f.f.e).width,-size*.625-20*size*1.25/spr(f.f.e).width,size*1.25+40*size*1.25/spr(f.f.e).width,size*1.25+40*size*1.25/spr(f.f.e).width);ctx.globalCompositeOperation='source-over';ctx.globalAlpha=clamp(f.a,0,1)}
+  ctx.restore();
+  if(f.gold&&f.st!==2)for(let i=0;i<3;i++){const a=T*2.5+i*TAU/3,tw=.5+.5*Math.sin(T*9+i*2);star4(sp.x+Math.cos(a)*size*.7,sp.y+Math.sin(a)*size*.55,size*.16*(.5+tw),'rgba(255,245,170,'+(.5+.5*tw)+')')}
   if(f.haz==='bomb'){const r=size*.09*(1+.6*Math.abs(Math.sin(T*40)));ctx.fillStyle='#ffd23f';ctx.beginPath();ctx.arc(sp.x+size*.3,sp.y-size*.5,r,0,TAU);ctx.fill();
     ctx.fillStyle='#ff6b00';ctx.beginPath();ctx.arc(sp.x+size*.3,sp.y-size*.5,r*.5,0,TAU);ctx.fill()}
   else if(f.haz==='poop'){ctx.fillStyle='#333';for(let i=0;i<2;i++){const a=T*7+i*Math.PI;ctx.beginPath();ctx.arc(sp.x+Math.cos(a)*size*.55,sp.y-size*.45+Math.sin(a*1.3)*size*.15,Math.max(1.2,size*.045),0,TAU);ctx.fill()}}
