@@ -12,7 +12,7 @@
 <link rel="manifest" href="manifest.json">
 <title>雞髀大胃王 · 跑去抱媽咪</title>
 <!-- 上載前一定要改版本號（日期-次數），手機先會自動攞新版 -->
-<script>window.__GB_VER='2026-11-10-9';</script>
+<script>window.__GB_VER='2026-11-10-10';</script>
 <style>
 :root{--app-h:100vh;--pink:#ff5c8a;--pink2:#ff8fb1;--ink:#5a3b2e;--soft:#8a5a44}
 *{box-sizing:border-box;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
@@ -118,6 +118,10 @@ body{font-family:-apple-system,"PingFang HK","PingFang TC","Noto Sans CJK TC","N
 .setRow label{display:flex;flex-direction:column;align-items:center;font-size:13px;color:var(--soft);gap:4px}
 .setRow input{width:104px;font:inherit;font-size:24px;font-weight:900;text-align:center;color:#d6246a;border:2px solid #ff8fb1;border-radius:14px;padding:6px 4px;background:#fff;-webkit-user-select:text;user-select:text}
 .setRow span{padding-bottom:12px}
+.spdRow{display:flex;align-items:center;justify-content:center;gap:8px;margin:6px 0;font-weight:900}
+.spdRow .spdName{width:62px;text-align:left;font-size:17px;white-space:nowrap}
+.spdRow .spdB{padding:6px 10px;font-size:15px;min-width:68px;white-space:nowrap}
+.spdRow b{min-width:62px;font-size:24px;color:#d6246a;text-align:center}
 .presets{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:6px 0}
 .presets .small{padding:6px 10px;font-size:14px}
 #toast{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom) + 24px);transform:translateX(-50%);background:rgba(90,59,46,.92);color:#fff;
@@ -212,6 +216,10 @@ body{font-family:-apple-system,"PingFang HK","PingFang TC","Noto Sans CJK TC","N
       <div class="setRow"><label>最少<input type="number" id="setLo" inputmode="numeric" step="10" min="0"></label><span>–</span><label>最多<input type="number" id="setHi" inputmode="numeric" step="10" min="100"></label><span>分</span></div>
       <div class="presets" id="presets"><button class="btn small" data-lo="100" data-hi="500">100–500</button><button class="btn small" data-lo="300" data-hi="1500">300–1500</button><button class="btn small" data-lo="500" data-hi="1000">500–1000</button><button class="btn small" data-lo="1000" data-hi="2000">1000–2000</button></div>
       <p class="note" id="setInfo"></p>
+      <p class="wish" style="margin-top:10px">🏃 行同跑嘅速度（全部模式）</p>
+      <div class="spdRow"><span class="spdName">👣 行</span><button class="btn small spdB" data-k="walk" data-d="-1">🐢 −</button><b id="spdWalk">×1.0</b><button class="btn small spdB" data-k="walk" data-d="1">＋ 🐇</button></div>
+      <div class="spdRow"><span class="spdName">💨 跑</span><button class="btn small spdB" data-k="run" data-d="-1">🐢 −</button><b id="spdRun">×1.0</b><button class="btn small spdB" data-k="run" data-d="1">＋ 🐇</button></div>
+      <p class="note" id="spdInfo"></p>
       <button class="btn big" id="setSave">✅ 儲存</button>
       <div class="row"><button class="btn small" id="setReset">↩️ 還原預設</button><button class="btn small" id="setClose">✕ 唔改</button></div>
     </div>
@@ -276,6 +284,16 @@ const STAGES=[
   {name:'學行行', icon:'👣',speed:7.2,steer:10,cad:2.2,spawn:.42,z0:23},
   {name:'跑跑跑', icon:'💨',speed:12, steer:14,cad:3.4,spawn:.32,z0:31}
 ];
+/* 行同跑速度（設定入面改，存 gb-speed）：×0.5 至 ×2.0，全部模式都用
+   快咗：步頻跟住快（^0.6）、嘢喺遠啲跌（^0.65）、左右移快啲（^0.5），等反應時間差唔多；慢咗相反 */
+const STAGE_BASE=STAGES.map(o=>({...o})),SPD_DEF={walk:1,run:1},SPD_MIN=.5,SPD_MAX=2;
+const spdOk=v=>typeof v==='number'&&v>=SPD_MIN-1e-6&&v<=SPD_MAX+1e-6;
+let SPD=(()=>{try{const r=JSON.parse(localStorage.getItem('gb-speed')||'null');if(r&&spdOk(r.walk)&&spdOk(r.run))return r}catch(e){}return{...SPD_DEF}})();
+function spdMul(i){return i===1?SPD.walk:i===2?SPD.run:1}
+function applySpeed(){for(let i=1;i<=2;i++){const m=spdMul(i),b=STAGE_BASE[i];
+  STAGES[i].speed=b.speed*m;STAGES[i].cad=b.cad*Math.pow(m,.6);STAGES[i].z0=Math.min(48,Math.round(b.z0*Math.pow(m,.65)));
+  STAGES[i].steer=b.steer*Math.pow(m,.5)}}
+applySpeed();
 
 /* ---- 禁止雙指放大、雙擊放大、長按選單 ---- */
 ['gesturestart','gesturechange','gestureend'].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));
@@ -683,7 +701,7 @@ function updPlay(dt){
   tGame+=dt;timeLeft-=dt;const st=STAGES[p.stage];
   if(timeLeft>1){
     if(!rain&&timeLeft<=CFG.RAIN_AT){rain=true;rainT=0;banner('最後 10 秒！食物雨！🍗');SFX.whistle();Music.boost=1.15;flashA=.3;flashRed=false}
-    if(rain){rainT-=dt;if(rainT<=0){const d=dda();rainT=clamp(.11*(1+.6*d)*TUNE.spawnMul,.05,.22);const pr=clamp((.3+.22*d)*TUNE.hazMul,.12,.6),z=rand(30,48);   // 食物雨：喺遠啲跌、慢慢飄落、好密，食物多過屎
+    if(rain){rainT-=dt;if(rainT<=0){const d=dda();rainT=clamp(.11*(1+.6*d)*TUNE.spawnMul,.05,.22);const pr=clamp((.3+.22*d)*TUNE.hazMul,.12,.6),z=Math.min(56,rand(30,48)*Math.pow(spdMul(p.stage),.65));   // 食物雨：喺遠啲跌、慢慢飄落、好密，食物多過屎
       if(Math.random()<pr)spawnFood(Math.random()<.4?p.x+rand(-1,1):rand(-XLIM,XLIM),z,'poop',rand(12,18));
       else{const r=Math.random();spawnFood(rand(-XLIM,XLIM),z,r<.012/TUNE.goldMul?'gold':r<.04,rand(12,18))}}}
     else{spawnT-=dt;if(spawnT<=0){spawnWave();spawnT=st.spawn*rand(.85,1.2)*(1+.25*dda())*TUNE.spawnMul}}
@@ -1487,12 +1505,21 @@ function setInfo(){const r=readRange();if(!(r.hi>=r.lo+100)){$('setInfo').textCo
   const T=Math.round((r.lo+(r.hi-r.lo)*.32)/10)*10;
   $('setInfo').textContent='唔郁大約 '+r.lo+' 分（保底）· 一半認真大約 '+T+' 分 · 好叻接近 '+r.hi+' 分（封頂）；遊戲會自動調食物、金雞髀同屎、炸彈嘅數量'}
 function showRange(){$('rangeTxt').textContent=RANGE.lo+'–'+RANGE.hi}
-$('setBtn').addEventListener('click',()=>{$('setLo').value=RANGE.lo;$('setHi').value=RANGE.hi;setInfo();$('setScr').classList.remove('hidden')});
+let spdEdit={...SPD};
+function spdTxt(v){return '×'+v.toFixed(1)}
+function spdShow(){$('spdWalk').textContent=spdTxt(spdEdit.walk);$('spdRun').textContent=spdTxt(spdEdit.run);
+  const w=STAGE_BASE[1].speed*spdEdit.walk,r=STAGE_BASE[2].speed*spdEdit.run;
+  $('spdInfo').textContent='行每秒 '+w.toFixed(1)+' 米 · 跑每秒 '+r.toFixed(1)+' 米（正常 ×1.0）'+(r<w?' · 跑會慢過行':'')+'；快咗啲嘢會喺遠啲跌，生日模式分數照樣自動調'}
+document.querySelectorAll('.spdB').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.k;
+  spdEdit[k]=Math.round(clamp(spdEdit[k]+(+b.dataset.d)*.1,SPD_MIN,SPD_MAX)*10)/10;spdShow()}));
+$('setBtn').addEventListener('click',()=>{$('setLo').value=RANGE.lo;$('setHi').value=RANGE.hi;setInfo();spdEdit={...SPD};spdShow();$('setScr').classList.remove('hidden')});
 $('setLo').addEventListener('input',setInfo);$('setHi').addEventListener('input',setInfo);
 $('presets').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$('setLo').value=b.dataset.lo;$('setHi').value=b.dataset.hi;setInfo()});
 $('setSave').addEventListener('click',()=>{const r=readRange();if(!(r.hi>=r.lo+100)){toast('「最多」要比「最少」大 100 分或以上');return}
-  RANGE=r;LS.set('gb-range',JSON.stringify(r));applyRange();showRange();$('setScr').classList.add('hidden');toast('已經儲存：'+r.lo+'–'+r.hi+' 分')});
-$('setReset').addEventListener('click',()=>{$('setLo').value=RANGE_DEF.lo;$('setHi').value=RANGE_DEF.hi;setInfo()});
+  RANGE=r;LS.set('gb-range',JSON.stringify(r));applyRange();showRange();
+  SPD={...spdEdit};LS.set('gb-speed',JSON.stringify(SPD));applySpeed();
+  $('setScr').classList.add('hidden');toast('已經儲存：'+r.lo+'–'+r.hi+' 分 · 行 '+spdTxt(SPD.walk)+' · 跑 '+spdTxt(SPD.run))});
+$('setReset').addEventListener('click',()=>{$('setLo').value=RANGE_DEF.lo;$('setHi').value=RANGE_DEF.hi;setInfo();spdEdit={...SPD_DEF};spdShow()});
 $('setClose').addEventListener('click',()=>$('setScr').classList.add('hidden'));
 showRange();
 $('endlessBtn').addEventListener('click',()=>{mode='endless';startGame()});
@@ -1547,7 +1574,7 @@ requestAnimationFrame(frame);
 setTimeout(checkUpdate,1500);
 if(/[?&]test\b/.test(location.search))window.__gbTest={
   get s(){return{state,mode,lives,tut:tut.step,eaten,score,bombs,poops,stage:p.stage,timeLeft,phase:fin&&fin.phase,foods:foods.length,parts:parts.length,mom:mom&&mom.z,zoom,endShown}},
-  start(m){if(m)mode=m;startGame()},range(lo,hi){RANGE={lo,hi};applyRange();showRange()},tune(){return{...TUNE}},sheet(v){sheetMode=v},auto(v){autoPilot=v},drop(k){p.tx=p.x;p.tz=p.z;spawnFood(p.x,p.z+STAGES[p.stage].speed*1.15+.5,k)},setTime(v){timeLeft=v},setEaten(v){eaten=v;checkEvolve();hudDirty=true}
+  start(m){if(m)mode=m;startGame()},range(lo,hi){RANGE={lo,hi};applyRange();showRange()},tune(){return{...TUNE}},speed(w,r){SPD={walk:w,run:r};applySpeed();return STAGES.map(o=>({speed:o.speed,cad:o.cad,z0:o.z0}))},sheet(v){sheetMode=v},auto(v){autoPilot=v},drop(k){p.tx=p.x;p.tz=p.z;spawnFood(p.x,p.z+STAGES[p.stage].speed*1.15+.5,k)},setTime(v){timeLeft=v},setEaten(v){eaten=v;checkEvolve();hudDirty=true}
 };
 })();
 </script>
