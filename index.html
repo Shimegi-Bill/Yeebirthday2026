@@ -12,7 +12,7 @@
 <link rel="manifest" href="manifest.json">
 <title>雞髀大胃王 · 跑去抱媽咪</title>
 <!-- 上載前一定要改版本號（日期-次數），手機先會自動攞新版 -->
-<script>window.__GB_VER='2026-11-10-7';</script>
+<script>window.__GB_VER='2026-11-10-8';</script>
 <style>
 :root{--app-h:100vh;--pink:#ff5c8a;--pink2:#ff8fb1;--ink:#5a3b2e;--soft:#8a5a44}
 *{box-sizing:border-box;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
@@ -103,6 +103,17 @@ body{font-family:-apple-system,"PingFang HK","PingFang TC","Noto Sans CJK TC","N
 #camRow2 .big{width:auto;padding:12px 24px;margin-top:0;font-size:21px}
 @media (max-height:700px){.slot .pic{width:52px;height:52px;font-size:24px}.how{margin:6px 0 4px;line-height:1.35}.how li{padding:1px 0}
   .big{padding:10px 0;margin-top:8px;font-size:22px}.ribbon{margin:6px 0 2px}.row{margin-top:6px}.photos{margin:4px 0 0}.title{font-size:min(34px,9vw)}.how li{padding:0}.credit{margin-top:5px}.note{margin:0}.how{font-size:min(14px,3.7vw)}}
+.big small{display:block;font-size:13px;letter-spacing:0;font-weight:800;opacity:.92;margin-top:2px}
+.modeRow{display:flex;gap:10px;margin-top:10px}
+.mode{flex:1;background:#fff;color:#d6246a;border:2px solid #ff8fb1;padding:9px 4px;font-size:17px;box-shadow:0 3px 0 #ffb0c6}
+.mode:active{transform:translateY(2px);box-shadow:0 1px 0 #ffb0c6}
+.mode small{display:block;font-size:12px;color:var(--soft);font-weight:800;margin-top:2px}
+#hud .lives{display:none;flex:1;font-size:22px;letter-spacing:3px;text-align:center;margin:0 6px}
+#hud[data-mode=endless] .track{display:none}#hud[data-mode=endless] .lives{display:block}
+#hud[data-mode=tutorial] .track,#hud[data-mode=tutorial] #timeTxt,#hud[data-mode=tutorial] .evo{display:none}
+#hud[data-mode=tutorial] .trackRow{justify-content:flex-end}
+#lives.hurt{animation:shake .5s}
+.bigIcon{font-size:72px;line-height:1.1;animation:beat 1s infinite}
 #toast{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom) + 24px);transform:translateX(-50%);background:rgba(90,59,46,.92);color:#fff;
   padding:9px 16px;border-radius:999px;font-size:14px;font-weight:700;opacity:0;visibility:hidden;transition:opacity .3s;white-space:nowrap;pointer-events:none}
 #toast.show{opacity:1;visibility:visible}
@@ -116,6 +127,7 @@ body{font-family:-apple-system,"PingFang HK","PingFang TC","Noto Sans CJK TC","N
   <div id="hud" class="hidden">
     <div class="trackRow">
       <div class="track"><div class="trackFill" id="trackFill"></div><div class="face" id="runner">👶</div><div class="face" id="goal">👩</div></div>
+      <div class="lives" id="lives">❤️❤️❤️</div>
       <div id="timeTxt">40</div>
       <button class="btn" id="pauseBtn" aria-label="暫停">⏸</button>
     </div>
@@ -128,20 +140,13 @@ body{font-family:-apple-system,"PingFang HK","PingFang TC","Noto Sans CJK TC","N
     <div class="card">
       <div class="title">雞髀大胃王<small>爬爬 → 行行 → 跑跑，去抱媽咪！</small></div>
       <div class="ribbon">🎂 二家姐生日快樂 🎂</div>
-      <ul class="how">
-        <li><span class="ic">👆</span><span>手指<b>拖住雞髀</b>，左右前後咁行</span></li>
-        <li><span class="ic">🍓</span><span>食跌落嚟嘅好嘢 <b>+10</b>，連續食分更多；🎂 <b>+50</b>；✨金光雞髀 <b>+100</b></span></li>
-        <li><span class="ic">💣</span><span>避開<b class="bad">炸彈 −50</b>（畫面會震）同<b class="bad">屎 💩 −30</b>（會整污糟畫面）</span></li>
-        <li><span class="ic">👣</span><span>食得多就會<b>由爬變行，再變跑</b></span></li>
-        <li><span class="ic">🍗</span><span><b>最後 10 秒落食物雨</b>（仲有好多屎 💩）</span></li>
-        <li><span class="ic">🤗</span><span>40 秒後，雞髀會<b>跑去抱媽咪</b></span></li>
-      </ul>
       <div class="photos">
         <div class="slot" id="slotKid"><div class="pic">👶</div><span>雞髀</span><div class="x">✕</div></div>
         <div class="slot" id="slotMom"><div class="pic">📷</div><span>影媽咪個樣</span><div class="x">✕</div></div>
       </div>
-      <p class="note">撳「開始！」會先即時影媽咪個樣，用喺遊戲入面</p>
-      <button class="btn big" id="startBtn">開始！</button>
+      <p class="note">生日模式會先即時影媽咪個樣，用喺遊戲入面</p>
+      <button class="btn big" id="startBtn">🎂 生日模式<small>40 秒 · 最後跑去抱媽咪</small></button>
+      <div class="modeRow"><button class="btn mode" id="tutBtn">🎓 新手教學<small>玩一次就識</small></button><button class="btn mode" id="endlessBtn">♾️ 無限模式<small>3 條命</small></button></div>
       <div class="row"><button class="btn small" id="muteBtn3">🔊 有聲</button></div>
       <div class="credit" id="bestTxt"></div>
       <div class="credit">由 Bill Chiu 開發 · 送俾二家姐 · <span id="verTxt"></span></div>
@@ -183,6 +188,26 @@ body{font-family:-apple-system,"PingFang HK","PingFang TC","Noto Sans CJK TC","N
     </div>
   </div>
 
+  <div id="over" class="screen hidden">
+    <div class="card">
+      <div class="bigIcon">💥</div>
+      <div class="endTitle">冇晒命！</div>
+      <div class="bigScore"><span id="overScore">0</span><small>分</small></div>
+      <div id="overRec" class="hidden">🏆 新紀錄！</div>
+      <div class="endStats" id="overStats"></div>
+      <div class="row"><button class="btn small" id="overAgain">🔁 再玩一次</button><button class="btn small" id="overHome">🏠 返主頁</button></div>
+    </div>
+  </div>
+
+  <div id="tutDone" class="screen hidden">
+    <div class="card">
+      <div class="bigIcon">🎓✅</div>
+      <div class="row"><button class="btn big" id="tdBirthday">🎂 生日模式</button></div>
+      <div class="modeRow"><button class="btn mode" id="tdEndless">♾️ 無限模式</button></div>
+      <div class="modeRow"><button class="btn mode" id="tdAgain">🔁</button><button class="btn mode" id="tdHome">🏠</button></div>
+    </div>
+  </div>
+
   <button class="btn hidden" id="muteBtn" aria-label="聲音">🔊</button>
   <div id="toast"></div>
 </div>
@@ -217,9 +242,9 @@ const PTS={food:10,cake:50,gold:100,bomb:-50,poop:-30};   // 分數：好嘢、�
 const HAZ={bomb:{e:'💣',n:'炸彈'},poop:{e:'💩',n:'屎'}};
 const HAZ_RATE=[.24,.34,.44];                     // 每次跌嘢係扣分物品嘅機會（爬、行、跑）
 const STAGES=[
-  {name:'BB 爬爬',icon:'🍼',speed:4,  steer:7, cad:1.05,spawn:.8, z0:16},
-  {name:'學行行', icon:'👣',speed:7.2,steer:10,cad:2.2,spawn:.66,z0:23},
-  {name:'跑跑跑', icon:'💨',speed:12, steer:14,cad:3.4,spawn:.5, z0:31}
+  {name:'BB 爬爬',icon:'🍼',speed:4,  steer:7, cad:1.05,spawn:.6, z0:16},
+  {name:'學行行', icon:'👣',speed:7.2,steer:10,cad:2.2,spawn:.5, z0:23},
+  {name:'跑跑跑', icon:'💨',speed:12, steer:14,cad:3.4,spawn:.38,z0:31}
 ];
 
 /* ---- 禁止雙指放大、雙擊放大、長按選單 ---- */
@@ -407,15 +432,17 @@ function makeSplat(seed){
 }
 function splatScreen(){
   const n=3+(Math.random()*2|0);
-  for(let i=0;i<n;i++)splats.push({x:W*rand(.15,.85),y:H*rand(.25,.75),s:rand(.7,1.35)*Math.min(W,H)/390,rot:rand(-.6,.6),spr:pick(SPLAT_SPR),t:-i*.06,life:2.8})
+  for(let i=0;i<n;i++)splats.push({x:W*rand(.15,.85),y:H*rand(.25,.75),s:rand(.7,1.35)*Math.min(W,H)/390,rot:rand(-.6,.6),spr:pick(SPLAT_SPR),t:-i*.05,life:1.3})
 }
 function drawSplats(dt){
   for(const q of splats){q.t+=dt;if(q.t<0)continue;q.y+=q.s*8*dt;
-    const pop=Math.min(1,q.t/.12),a=q.t>q.life-1.1?Math.max(0,(q.life-q.t)/1.1):1,w=q.spr.width*q.s*(.55+.45*pop);
+    const pop=Math.min(1,q.t/.1),a=q.t>q.life-.7?Math.max(0,(q.life-q.t)/.7):1,w=q.spr.width*q.s*(.55+.45*pop);
     ctx.save();ctx.globalAlpha=.9*a;ctx.translate(q.x,q.y);ctx.rotate(q.rot);ctx.drawImage(q.spr,-w/2,-w*.46,w,w);ctx.restore()}
   prune(splats,q=>q.t<q.life);
 }
 let mom=null,fin=null,cd=null,zoom=1,zE=0,endShown=false;
+const tut={step:0,t:0,items:[],lock:false,hand:null,wait:0,hits:0,pause:0,rainT:0,grown:0};
+let mode='birthday',lives=3,overT=0,bestEndless=+(LS.get('gb-best-endless')||0);   // 模式：birthday 生日／tutorial 新手教學／endless 無限
 let drag=null,dragDist=0,hintOn=false,flashA=0,lastTick=99,autoPilot=false,hudDirty=true;
 const photos={kid:null,mom:null};
 function prune(arr,keep){let j=0;for(let i=0;i<arr.length;i++)if(keep(arr[i]))arr[j++]=arr[i];arr.length=j}
@@ -440,15 +467,15 @@ function spawnFood(x,z,kind,g){
 /* 自動調難度：而家分數比「應有分數」高就難啲，低就易啲，令最後分數大約 500–1500
    應有分數（一半認真玩）：頭 30 秒每秒 14 分（420），最後 10 秒食物雨每秒 26 分（+260）＝ 680 */
 function expectScore(t){const t0=CFG.DURATION-CFG.RAIN_AT;return t<=t0?t*14:t0*14+(t-t0)*26}
-function dda(){if(state!=='play')return 0;const d=(score-expectScore(CFG.DURATION-timeLeft))/420;return clamp(d>0?d*.8:d,-1,1)}   // 叻嘅人罰得輕少少
+function dda(){if(state!=='play'||mode!=='birthday')return 0;const d=(score-expectScore(CFG.DURATION-timeLeft))/420;return clamp(d>0?d*.8:d,-1,1)}   // 叻嘅人罰得輕少少
 // 好嘢多數跌喺離雞髀遠啲嘅位（要拖先食到）；分數低就多啲跌埋雞髀身邊
 function aimX(){const d=dda(),near=d<0?.1-d*.22:.1*(1-d);if(Math.random()<near)return p.x+rand(-1.2,1.2);
   if(Math.random()<.12)return rand(-XLIM,XLIM);let x=0;for(let i=0;i<6;i++){x=rand(-XLIM,XLIM);if(Math.abs(x-p.x)>1.1)break}return x}
-function hazX(){return Math.random()<clamp(.5+.3*dda(),.25,.8)?p.x+rand(-.7,.7):rand(-XLIM,XLIM)}
-function pickHaz(){return Math.random()<(p.stage===2?.6:.45)?'bomb':'poop'}
+function hazX(){const aim=mode==='endless'?.25+.25*endDiff():clamp(.5+.3*dda(),.25,.8);return Math.random()<aim?p.x+rand(-.7,.7):rand(-XLIM,XLIM)}
+function pickHaz(){const b=mode==='endless'?.25+.3*endDiff():p.stage===2?.6:.45;return Math.random()<b?'bomb':'poop'}   // 無限模式：開頭炸彈少，越玩越多
 function spawnWave(){
   const st=STAGES[p.stage],z0=st.z0,r=Math.random();
-  if(Math.random()<clamp(HAZ_RATE[p.stage]*(1+.5*dda()),.12,.7)){
+  if(Math.random()<(mode==='endless'?clamp(HAZ_RATE[p.stage]*.6+.25*endDiff(),.1,.6):clamp(HAZ_RATE[p.stage]*(1+.5*dda()),.12,.7))){
     const n=p.stage===2&&Math.random()<.4?2:1;
     for(let i=0;i<n;i++)spawnFood(hazX()+(i?rand(-1.5,1.5):0),z0+rand(-1.5,1.5)+i*2.4,pickHaz());
     return;
@@ -456,7 +483,7 @@ function spawnWave(){
   if(p.stage>0&&r<.22){const x=aimX(),mid=Math.random()<.35;for(let i=0;i<3;i++)spawnFood(x,z0+i*2.2,mid&&i===1?pickHaz():false)}
   else if(p.stage>0&&r<.36){const dir=Math.random()<.5?-1:1,bad=Math.random()<.35?1+(Math.random()*2|0):-1;
     for(let i=0;i<4;i++)spawnFood(dir*(-2+i*1.33),z0+i*1.6,i===bad?pickHaz():false)}
-  else if(p.stage===0&&r<.25){const x=aimX();spawnFood(x,z0);spawnFood(x+rand(-1.2,1.2),z0+2.5)}
+  else if(p.stage===0&&r<.4){const x=aimX();spawnFood(x,z0);spawnFood(x+rand(-1.2,1.2),z0+2.5)}
   else spawnFood(aimX(),z0+rand(-2,2));
 }
 const headH=()=>anim.pose?-anim.pose.hy/100*CHAR:(p.stage===0?.87:1.17)*CHAR;
@@ -466,28 +493,27 @@ function eat(f){
   for(let i=0;i<7;i++)addPart({type:'dot',x:sp.x,y:sp.y,vx:rand(-90,90),vy:rand(-170,-40),g:420,life:rand(.35,.6),max:.6,r:rand(2,4),col:pick(['#ffd23f','#ff9f43','#ff6b81','#ffffff'])});
   if(state!=='play')return;
   eaten+=f.bonus||f.gold?3:1;combo=(tGame-lastEat<1.2)?combo+1:1;lastEat=tGame;
-  const pts=f.gold?PTS.gold:f.bonus?PTS.cake:PTS.food*(combo>=6&&!rain?3:combo>=3?2:1);addScore(pts);   // 食物雨入面連續食最多 ×2
+  const pts=f.gold?PTS.gold:f.bonus?PTS.cake:PTS.food;addScore(pts);   // 2026-11-10 第八版：取消連續食獎勵
   SFX.chomp(combo);if(f.bonus||f.gold)SFX.bonus();
   if(f.gold){flashA=.25;flashRed=false;for(let i=0;i<12;i++){const a=i/12*TAU;addPart({type:'spr',ch:i%2?'⭐':'✨',x:sp.x,y:sp.y,vx:Math.cos(a)*rand(90,170),vy:Math.sin(a)*rand(90,170)-40,g:160,life:.8,max:.8,size:rand(14,20),rot:0,vr:rand(-3,3)})}}
   addPart({type:'spr',ch:'✨',x:sp.x+rand(-14,14),y:sp.y-6,vx:0,vy:-40,g:0,life:.5,max:.5,size:22,rot:0,vr:0});
   addPart({type:'ring',x:sp.x,y:sp.y,vx:0,vy:0,g:0,life:.35,max:.35,r0:sp.s*.1,r1:sp.s*.7,w:3,col:f.f.c||'#ffd23f'});
   for(let i=0;i<5;i++)addPart({type:'dot',x:sp.x,y:sp.y,vx:rand(-120,120),vy:rand(-150,-30),g:380,life:rand(.3,.55),max:.55,r:rand(2,3.5),col:f.f.c||'#ffd23f'});
   addPop(sp.x,sp.y-14,f.gold?'✨ 金雞髀！+'+pts:f.bonus?'🎂 生日蛋糕！+'+pts:f.f===DRUM?'雞髀😋 +'+pts:f.f.n+'！+'+pts,f.gold?'#c98a00':f.bonus?'#d6246a':'#e8590c',f.gold?27:f.bonus||f.f===DRUM?23:20);
-  if(combo===3||combo===6||(combo>=10&&combo%5===0))addPop(sp.x,sp.y-14,'連續食 ×'+combo+(combo>=6&&!rain?'！每樣 30 分':combo>=3?'！每樣 20 分':'！'),'#5f3dc4',18);
   checkEvolve();hudDirty=true;
 }
 function addScore(v){
-  const old=score;score=clamp(score+v,0,CFG.MAX_SCORE);hudDirty=true;
-  if(score===CFG.MAX_SCORE&&old<CFG.MAX_SCORE){const sp=proj(p.x,headH()+.6,p.z);if(sp)addPop(sp.x,sp.y,'🎉 '+CFG.MAX_SCORE+' 分封頂！','#d6246a',24)}
+  const old=score;score=Math.max(0,mode==='birthday'?Math.min(CFG.MAX_SCORE,score+v):score+v);hudDirty=true;
+  if(mode==='birthday'&&score===CFG.MAX_SCORE&&old<CFG.MAX_SCORE){const sp=proj(p.x,headH()+.6,p.z);if(sp)addPop(sp.x,sp.y,'🎉 '+CFG.MAX_SCORE+' 分封頂！','#d6246a',24)}
   const c=$('scoreChip');c.classList.remove('up','down');void c.offsetWidth;c.classList.add(v>=0?'up':'down');
 }
 function hit(f){
   f.a=0;combo=0;const sp=proj(p.x,headH()*.7,p.z);
   if(f.haz==='bomb'){
-    bombs++;addScore(PTS.bomb);p.inv=1.2;shake=.45;flashA=.45;flashRed=true;SFX.boom();try{navigator.vibrate&&navigator.vibrate(150)}catch(e){}
+    bombs++;if(mode==='endless')loseLife();else addScore(PTS.bomb);p.inv=1.2;shake=.45;flashA=.45;flashRed=true;SFX.boom();try{navigator.vibrate&&navigator.vibrate(150)}catch(e){}
     if(sp){addPart({type:'spr',ch:'💥',x:sp.x,y:sp.y,vx:0,vy:-20,g:0,life:.55,max:.55,size:sp.s*1.7,rot:0,vr:0});
       for(let i=0;i<10;i++)addPart({type:'puff',x:sp.x,y:sp.y,vx:rand(-150,150),vy:rand(-170,10),g:120,life:rand(.5,.9),max:.9,r:sp.s*.12,grow:sp.s*.4,col:'rgba(85,75,75,.55)'});
-      addPop(sp.x,sp.y-20,'💣 嘭！'+PTS.bomb,'#c92a2a',26)}
+      addPop(sp.x,sp.y-20,mode==='endless'?'💣 嘭！💔':'💣 嘭！'+PTS.bomb,'#c92a2a',26)}
   }else{
     poops++;addScore(PTS.poop);p.yuck=1;p.inv=1.2;SFX.splat();splatScreen();
     if(sp){for(let i=0;i<8;i++)addPart({type:'puff',x:sp.x,y:sp.y,vx:rand(-90,90),vy:rand(-120,-30),g:0,life:rand(.6,1),max:1,r:sp.s*.1,grow:sp.s*.3,col:'rgba(140,185,60,.5)'});
@@ -499,8 +525,9 @@ function addPop(x,y,txt,col,size){
   pops.push({x,y,txt,t:0,dur:1,col,size});if(pops.length>3)pops.shift();
 }
 function checkEvolve(){
-  if(p.stage===0&&eaten>=CFG.WALK_AT)evolve(1,CFG.KID+'識行喇！👣');
-  if(p.stage===1&&eaten>=CFG.RUN_AT)evolve(2,CFG.KID+'識跑喇！💨');
+  const wa=mode==='tutorial'?TUT_WALK:CFG.WALK_AT,ra=mode==='tutorial'?TUT_RUN:CFG.RUN_AT;
+  if(p.stage===0&&eaten>=wa&&(mode!=='tutorial'||tut.step>=7))evolve(1,CFG.KID+'識行喇！👣');
+  if(p.stage===1&&eaten>=ra&&(mode!=='tutorial'||tut.step>=7))evolve(2,CFG.KID+'識跑喇！💨');
 }
 function evolve(n,msg){
   p.stage=n;p.glow=1.2;Music.stage=n;SFX.levelup();banner(msg);flashA=.55;flashRed=false;hudDirty=true;
@@ -518,19 +545,19 @@ function resetGame(){
   eaten=0;score=0;bombs=0;poops=0;combo=0;lastEat=-9;tGame=0;timeLeft=CFG.DURATION;shake=0;
   Object.assign(p,{x:0,z:.8,tx:0,tz:.8,stage:0,chomp:0,glow:0,lean:0,vx:0,yuck:0,inv:0,face:0,yaw:0});splats.length=0;anim.mode='crawl';anim.t=1;anim.from=null;rain=false;rainT=0;goldT=rand(6,9);Music.boost=1;
   speed=0;spawnT=.6;bonusT=rand(8,11);mom=null;fin=null;cd=null;zoom=1;zE=0;endShown=false;lastTick=99;dragDist=0;drag=null;
-  Music.stage=0;hudDirty=true;flashA=0;
+  Music.stage=0;hudDirty=true;flashA=0;lives=3;overT=0;Object.assign(tut,{step:0,t:0,items:[],lock:false,hand:null,wait:0,hits:0,pause:0,rainT:0,grown:0});
 }
 function startGame(){
   initAudio();keepAwake();SFX.pop();
   $('start').classList.add('hidden');restart();
 }
 function restart(){
-  $('end').classList.add('hidden');newMusicBus();resetGame();
+  for(const id of ['end','over','tutDone'])$(id).classList.add('hidden');newMusicBus();resetGame();
   state='countdown';cd={t:0,i:0};hudShow();p.face=1;anim.mode='wave';anim.from=null;anim.t=1;
 }
-function beginPlay(){state='play';tGame=0;hintOn=true;Music.start();hudDirty=true;p.face=0}
+function beginPlay(){state='play';tGame=0;hintOn=mode!=='tutorial';Music.start();hudDirty=true;p.face=0;if(mode==='tutorial')tutStart()}
 function goHome(){
-  paused=false;$('pauseScr').classList.add('hidden');$('end').classList.add('hidden');
+  paused=false;for(const id of ['pauseScr','end','over','tutDone'])$(id).classList.add('hidden');mode='birthday';
   Music.stop();newMusicBus();resetGame();state='attract';hudHide();$('muteBtn').classList.add('hidden');$('start').classList.remove('hidden');showBest();
 }
 function pauseGame(){
@@ -566,11 +593,11 @@ function showEnd(){
   countUp(fs,rec);
 }
 let cuRaf=0;
-function countUp(target,rec){
-  const el=$('endScore'),t0=performance.now(),dur=1500;let shown=-1,lastTick=0;cancelAnimationFrame(cuRaf);
+function countUp(target,rec,elId,recId){
+  const el=$(elId||'endScore'),t0=performance.now(),dur=1500;let shown=-1,lastTick=0;cancelAnimationFrame(cuRaf);
   const step=t=>{const e=Math.min(1,(t-t0)/dur),v=Math.round(target*(1-Math.pow(1-e,3))/10)*10;   // 跳嘅時候都係 0 字尾
     if(v!==shown){shown=v;el.textContent=v;if(t-lastTick>70){lastTick=t;SFX.count1()}}
-    if(e<1)cuRaf=requestAnimationFrame(step);else if(rec&&target>0){$('newRec').classList.remove('hidden');SFX.bonus()}};
+    if(e<1)cuRaf=requestAnimationFrame(step);else if(rec&&target>0){$(recId||'newRec').classList.remove('hidden');SFX.bonus()}};
   cuRaf=requestAnimationFrame(step);
 }
 
@@ -582,7 +609,7 @@ function update(dt){
   // 世界前進速度
   let v=0;
   if(state==='attract')v=2.4;
-  else if(state==='play')v=STAGES[p.stage].speed;
+  else if(state==='play')v=STAGES[p.stage].speed*(mode==='endless'?1+.3*endDiff():mode==='tutorial'?.8:1);
   else if(state==='finale'){
     if(fin.phase>=2)v=0;
     else if(mom)v=Math.min(STAGES[2].speed,Math.max(1.5,(mom.z-MOM_STOP)*1.2));
@@ -601,6 +628,7 @@ function update(dt){
   else if(state==='play')updPlay(dt);
   else if(state==='attract')updAttract(dt);
   else if(state==='finale')updFinale(dt);
+  else if(state==='over')updOver(dt);
 
   updatePlayer(dt);
   updateFoods(dt);
@@ -619,6 +647,8 @@ function updCountdown(dt){
   while(cd.i<4&&cd.t>=marks[cd.i]){const i=cd.i++;if(i<3){banner(String(3-i));SFX.count(false)}else{banner('出發！');SFX.count(true);beginPlay()}}
 }
 function updPlay(dt){
+  if(mode==='tutorial'){updTut(dt);return}
+  if(mode==='endless'){updEndless(dt);return}
   tGame+=dt;timeLeft-=dt;const st=STAGES[p.stage];
   if(timeLeft>1){
     if(!rain&&timeLeft<=CFG.RAIN_AT){rain=true;rainT=0;banner('最後 10 秒！食物雨！🍗');SFX.whistle();Music.boost=1.15;flashA=.3;flashRed=false}
@@ -632,6 +662,74 @@ function updPlay(dt){
   const sec=Math.ceil(timeLeft);if(sec<=5&&sec>=1&&sec!==lastTick){lastTick=sec;SFX.tick()}
   if(hintOn&&(dragDist>40||tGame>7))hintOn=false;
   if(timeLeft<=0){timeLeft=0;startFinale()}
+}
+/* ---------------- 無限模式：冇時間限制，3 條命，中炸彈扣一條，越玩越難 ---------------- */
+function endDiff(){return mode==='endless'?Math.min(1,tGame/90):0}
+function updEndless(dt){
+  tGame+=dt;const st=STAGES[p.stage],df=endDiff();
+  spawnT-=dt;if(spawnT<=0){spawnWave();spawnT=st.spawn*rand(.85,1.2)*(1-.3*df)}
+  bonusT-=dt;if(bonusT<=0){spawnFood(rand(-2,2),st.z0+rand(-2,2),true);bonusT=rand(9,13)}
+  goldT-=dt;if(goldT<=0){let x=0;for(let i=0;i<8;i++){x=rand(-XLIM,XLIM);if(Math.abs(x-p.x)>1.5)break}spawnFood(x,st.z0+rand(0,5),'gold');goldT=rand(11,15)}
+  if(hintOn&&(dragDist>40||tGame>7))hintOn=false;
+}
+function loseLife(){
+  lives=Math.max(0,lives-1);hudDirty=true;const el=$('lives');el.classList.remove('hurt');void el.offsetWidth;el.classList.add('hurt');
+  if(lives<=0)gameOver();else banner('💔');
+}
+function gameOver(){
+  state='over';overT=0;drag=null;hintOn=false;p.yuck=0;Music.stop();hudHide();banner('💥');
+  const t=now();[67,63,60].forEach((m,i)=>tone(mf(m),t+.3+i*.28,.3,{type:'triangle',vol:.12}));tone(mf(55),t+1.14,.8,{type:'triangle',vol:.12});
+}
+function updOver(dt){
+  overT+=dt;p.face=Math.min(1,overT/.5);
+  if(overT>1.6&&$('over').classList.contains('hidden')){
+    const rec=score>bestEndless;if(rec){bestEndless=score;LS.set('gb-best-endless',String(score))}
+    $('overRec').classList.add('hidden');$('overStats').textContent='玩咗 '+Math.floor(tGame)+' 秒 · 食咗 '+eaten+' 樣好嘢 · 💩 中咗 '+poops+' 次';
+    $('overScore').textContent='0';$('over').classList.remove('hidden');$('muteBtn').classList.remove('hidden');countUp(score,rec,'overScore','overRec');
+  }
+}
+
+/* ---------------- 新手教學：玩一次學識（唔用文字，用手勢、箭咀、✅❌） ----------------
+   0 拖去右邊食 🍗 → 1 左邊三樣 → 2 金光雞髀 → 3 屎示範（鎖住雞髀，畀屎跌中）→ 4 避屎
+   → 5 炸彈示範 → 6 避炸彈 → 7 食物雨，食到長大識跑 → 8 完成 */
+const TUT_STEPS=9,TUT_WALK=8,TUT_RUN=16;
+function tutStart(){tut.step=0;tutSetup()}
+function tutDrop(kind){const z=p.z+STAGES[p.stage].speed*.8*1.15+.5;spawnFood(p.x,z,kind);const f=foods[foods.length-1];f.tut=1;tut.items=[f]}
+function tutSetup(){
+  const s=tut.step;tut.t=0;tut.wait=0;tut.items=[];tut.lock=false;tut.hand=null;hudDirty=true;tut.hits=s<=4?poops:bombs;
+  const add=(x,z,k)=>{spawnFood(x,z,k);const f=foods[foods.length-1];f.tut=1;tut.items.push(f)};
+  if(s===0){add(1.8,13);tut.hand={to:1.8}}
+  else if(s===1){for(let i=0;i<3;i++)add(-1.8,13+i*2.4);tut.hand={to:-1.8}}
+  else if(s===2){add(1.6,14,'gold');tut.hand={to:1.6}}
+  else if(s===3){tut.lock=true;tut.wait=.6}
+  else if(s===4){add(p.x,15,'poop');tut.hand={dodge:1}}
+  else if(s===5){tut.lock=true;tut.wait=.6}
+  else if(s===6){add(p.x,15,'bomb');tut.hand={dodge:1}}
+  else if(s===7){tut.rainT=0}
+  else if(s===8){banner('🎉');SFX.levelup();for(let i=0;i<90;i++)confetti.push(newConf(true));tut.wait=2.4}
+}
+function tutNext(ok){banner(ok?'✅':'❌');if(ok)SFX.bonus();tut.step++;tut.pause=1.1}
+function updTut(dt){
+  tGame+=dt;tut.t+=dt;
+  if(tut.pause>0){tut.pause-=dt;if(tut.pause<=0)tutSetup();return}
+  const s=tut.step,gone=f=>f.st!==2&&(f.a<=0||f.z<p.z-1.2||!foods.includes(f));
+  if(s<=2){
+    if(tut.items.some(f=>f.st===2)&&(s!==1||tut.items.filter(f=>f.st===2).length>=2)){tutNext(true);return}
+    if(tut.items.every(f=>f.st===2||gone(f))){banner('🔁');tutSetup()}
+  }else if(s===3||s===5){
+    if(tut.wait>0){tut.wait-=dt;if(tut.wait<=0)tutDrop(s===3?'poop':'bomb');return}
+    if((s===3?poops:bombs)>tut.hits){tut.hits=s===3?poops:bombs;banner('❌');tut.step++;tut.pause=1.6}
+    else if(tut.items[0]&&gone(tut.items[0])){tut.items=[];tut.wait=.3}
+  }else if(s===4||s===6){
+    const f=tut.items[0];if(!f)return;
+    if(f.a<=0&&f.st!==2&&(s===4?poops:bombs)>tut.hits){tut.hits=s===4?poops:bombs;banner('🔁');tut.pause=1.4;return}
+    if(f.z<p.z-1.2){tutNext(true)}
+  }else if(s===7){
+    tut.rainT-=dt;if(tut.rainT<=0){tut.rainT=.16;spawnFood(Math.random()<.5?p.x+rand(-1,1):rand(-XLIM,XLIM),rand(14,24),false,rand(14,20))}
+    if(p.stage===2){if(!tut.grown)tut.grown=tut.t;if(tut.t-tut.grown>1.6){tut.grown=0;tutNext(true)}}
+  }else if(s===8){
+    tut.wait-=dt;if(tut.wait<=0&&$('tutDone').classList.contains('hidden')){state='tutdone';Music.stop();hudHide();$('tutDone').classList.remove('hidden');$('muteBtn').classList.remove('hidden')}
+  }
 }
 let attractSpawn=1;
 function updAttract(dt){attractSpawn-=dt;if(attractSpawn<=0){attractSpawn=rand(1,1.6);spawnFood(rand(-2,2),16)}}
@@ -667,6 +765,7 @@ function autopilot(){
 function updatePlayer(dt){
   const st=STAGES[p.stage],ox=p.x;
   if(state==='attract'||(autoPilot&&state==='play'))autopilot();
+  if(mode==='tutorial'&&tut.lock&&state==='play'){p.tx=0;p.tz=.8;drag=null}
   if(state==='finale'){
     if(fin.phase<=1){p.tx=0;p.tz=1.2;moveTo(6*dt)}
     else if(fin.phase===2){p.x=lerp(p.x,0,Math.min(1,dt*4));p.z+=4.2*dt;if(p.z>=mom.z-.9){p.z=mom.z-.9;fin.phase=3;fin.jt=0;SFX.boing()}}
@@ -675,13 +774,14 @@ function updatePlayer(dt){
   p.lean=lerp(p.lean,clamp(p.vx*.03,-.2,.2),Math.min(1,dt*8));
   {const ym=anim.mode==='crawl'?.5:.28;p.yaw=lerp(p.yaw,clamp(p.vx*.05,-ym,ym),Math.min(1,dt*6))}
   p.ph+=TAU*(state==='countdown'?.5:st.cad)*dt;
-  let mode=['crawl','walk','run'][p.stage];
-  if(state==='countdown')mode=cd&&cd.t<2.4?'wave':'crawl';
-  else if(state==='finale')mode=fin.phase>=3?'hug':'run';
-  if(mode!==anim.mode){const st2=(m)=>['crawl','walk','run'].indexOf(m);setMode(mode,st2(mode)>st2(anim.mode)&&st2(anim.mode)>=0?.7:mode==='hug'?.4:.3)}
+  let am=['crawl','walk','run'][p.stage];
+  if(state==='countdown')am=cd&&cd.t<2.4?'wave':'crawl';
+  else if(state==='finale')am=fin.phase>=3?'hug':'run';
+  else if(state==='over'||state==='tutdone')am='idle';
+  if(am!==anim.mode){const st2=(m)=>['crawl','walk','run'].indexOf(m);setMode(am,st2(am)>st2(anim.mode)&&st2(anim.mode)>=0?.7:am==='hug'?.4:.3)}
   updAnim(dt);
-  const cs=Math.sign(Math.sin(p.ph));if(cs!==stepSign){stepSign=cs;if((mode==='walk'||mode==='run')&&(state==='play'||state==='finale')&&speed>1){
-    const sp=proj(p.x+(cs>0?-.15:.15)*CHAR,0,p.z);if(sp)for(let i=0;i<(mode==='run'?3:2);i++)addPart({type:'puff',x:sp.x+rand(-6,6),y:sp.y,vx:rand(-40,40),vy:rand(10,40),g:0,life:.4,max:.4,r:sp.s*.06,grow:sp.s*.22,col:'rgba(235,210,180,.55)'})}}
+  const cs=Math.sign(Math.sin(p.ph));if(cs!==stepSign){stepSign=cs;if((am==='walk'||am==='run')&&(state==='play'||state==='finale')&&speed>1){
+    const sp=proj(p.x+(cs>0?-.15:.15)*CHAR,0,p.z);if(sp)for(let i=0;i<(am==='run'?3:2);i++)addPart({type:'puff',x:sp.x+rand(-6,6),y:sp.y,vx:rand(-40,40),vy:rand(10,40),g:0,life:.4,max:.4,r:sp.s*.06,grow:sp.s*.22,col:'rgba(235,210,180,.55)'})}}
   if(p.chomp>0)p.chomp-=dt;if(p.glow>0)p.glow-=dt;
   if(p.inv>0)p.inv-=dt;
   if(p.yuck>0){p.yuck-=dt;stinkT-=dt;if(stinkT<=0){stinkT=.12;const sp=proj(p.x+rand(-.3,.3),headH()*.9,p.z);
@@ -699,7 +799,7 @@ function updateFoods(dt){
       if(f.h<=0){f.h=0;if(f.b<(f.g<G?1:2)&&f.vh<-3){f.vh=-f.vh*f.bn;f.b++;f.sq=1}else f.vh=0;f.vr*=.4}}
     else f.rot=lerp(f.rot,0,Math.min(1,dt*3));
     if(f.sq>0)f.sq=Math.max(0,f.sq-dt*5);
-    if(fin)f.a-=dt*1.6;
+    if(fin||state==='over')f.a-=dt*1.6;
     else if(canEat&&f.haz){if(state==='play'&&p.inv<=0&&Math.abs(f.z-p.z)<.55&&Math.abs(f.x-p.x)<.62&&f.h<2.2)hit(f)}
     else if(canEat&&Math.abs(f.z-p.z)<.65&&Math.abs(f.x-p.x)<.75&&f.h<2.6)eat(f);
   }
@@ -879,12 +979,8 @@ function kidArm(o,i){
   {const sd=i?1:-1,sx=o.nx+sd*(o.sw-2),sy=o.ny+6;
     limb2(sx,sy,o['e'+i+'x'],o['e'+i+'y'],o['a'+i+'x'],o['a'+i+'y'],6.4,5.4,4.8,SKIN,SKIN_HI);
     const hx=o['a'+i+'x'],hy=o['a'+i+'y'];
-    if(o.hb>.5){   // 手掌貼地、手指向前（向前即係畫面向上）
-      ctx.fillStyle=LINE;for(let f=0;f<4;f++){ctx.beginPath();ctx.ellipse(hx-4.5+f*3,hy-7.5+Math.abs(f-1.5)*.8,2.4,3.6,0,0,TAU);ctx.fill()}
-      ctx.beginPath();ctx.ellipse(hx-sd*6.3,hy-1.5,2.5,3.3,sd*.6,0,TAU);ctx.fill();
-      ellO(hx,hy,6.4,5.6,SKIN);ctx.fillStyle=SKIN;for(let f=0;f<4;f++){ctx.beginPath();ctx.ellipse(hx-4.5+f*3,hy-7.5+Math.abs(f-1.5)*.8,1.4,2.6,0,0,TAU);ctx.fill()}
-      ctx.beginPath();ctx.ellipse(hx-sd*6.3,hy-1.5,1.5,2.3,sd*.6,0,TAU);ctx.fill();
-      ctx.fillStyle=SKIN_HI;ctx.beginPath();ctx.ellipse(hx-1.5,hy-1.5,2.4,1.6,0,0,TAU);ctx.fill()}
+    if(o.hb>.5){   // 爬：手掌貼地、手指向前，由後面睇唔到手掌同手指，只見到少少手背
+      ellO(hx,hy-1,5.4,4.4,SKIN);ctx.fillStyle=SKIN_SH;ctx.beginPath();ctx.ellipse(hx,hy+1.5,4,1.6,0,0,TAU);ctx.fill()}
     else{circO(hx,hy,6,SKIN);ctx.fillStyle=SKIN_HI;ctx.beginPath();ctx.arc(hx-1.8,hy-2,2,0,TAU);ctx.fill()}}
 }
 function kidHeadBack(x,y,r){
@@ -1212,6 +1308,17 @@ function render(){
   if(hintOn&&state==='play'){const sp=proj(p.x,0,p.z);if(sp){const off=Math.sin(T*3)*26,sz=42;ctx.globalAlpha=.95;
     ctx.drawImage(spr('👆'),sp.x+off-sz*.4,sp.y+8,sz*1.25,sz*1.25);
     ctx.font='900 19px '+UIF;ctx.textAlign='center';ctx.textBaseline='middle';outlineText('拖住'+CFG.KID+'行！',sp.x,sp.y-sp.s*1.85*CHAR,'#d6246a');ctx.globalAlpha=1}}
+  if(mode==='tutorial'&&state==='play'&&!(tut.pause>0)){
+    for(const f of tut.items){if(f.st!==0||f.a<=0)continue;const q=proj(f.x,f.h+f.sz*1.3,f.z);if(!q)continue;const sz=Math.max(26,q.s*.9),bob=Math.abs(Math.sin(T*6))*10;
+      ctx.drawImage(spr(f.haz?'🙅':'👇'),q.x-sz*.62,q.y-sz*1.25-bob,sz*1.25,sz*1.25)}
+    const sp=proj(p.x,0,p.z);
+    if(sp&&tut.hand){const sz=46,cyc=(T*.8)%1;let x0=sp.x,x1;
+      if(tut.hand.dodge){const f=tut.items[0];const dir=f&&f.x>p.x?-1:1;x1=sp.x+dir*W*.28}else{const q=proj(tut.hand.to,0,p.z);x1=q?q.x:sp.x}
+      const e=ease(Math.min(1,cyc/.75)),hx=lerp(x0,x1,e),hy=sp.y+18;ctx.globalAlpha=cyc>.85?(1-cyc)/.15:1;
+      ctx.strokeStyle='rgba(255,92,138,.55)';ctx.lineWidth=6;ctx.lineCap='round';ctx.setLineDash([2,12]);ctx.beginPath();ctx.moveTo(x0,hy+10);ctx.lineTo(hx,hy+10);ctx.stroke();ctx.setLineDash([]);
+      ctx.drawImage(spr('👆'),hx-sz*.4,hy,sz*1.25,sz*1.25);ctx.globalAlpha=1}
+    if(sp&&tut.lock){const sz=34;ctx.globalAlpha=.9;ctx.drawImage(spr('👀'),sp.x-sz*.62,sp.y-sp.s*CHAR*1.6-sz,sz*1.25,sz*1.25);ctx.globalAlpha=1}
+  }
   for(const c of confetti){ctx.save();ctx.translate(c.x,c.y);ctx.rotate(c.rot);ctx.scale(1,Math.cos(T*5+c.sw));ctx.fillStyle=c.col;ctx.fillRect(-c.w/2,-c.h/2,c.w,c.h);ctx.restore()}
   drawSplats(paused?0:renderDt);
   if(flashA>0){ctx.fillStyle=(flashRed?'rgba(255,70,70,':'rgba(255,255,255,')+flashA+')';ctx.fillRect(0,0,W,H)}
@@ -1222,10 +1329,21 @@ function render(){
    ========================================================= */
 const elRunner=$('runner'),elFill=$('trackFill'),elTime=$('timeTxt'),elGoal=$('goal');
 let hudProg=-1,hudSec=-1;
-function hudShow(){const h=$('hud');h.classList.remove('hidden','fade');$('muteBtn').classList.add('hidden');hudDirty=true;hudProg=-1;hudSec=-1}
+function hudShow(){const h=$('hud');h.dataset.mode=mode;h.classList.remove('hidden','fade');$('muteBtn').classList.add('hidden');hudDirty=true;hudProg=-1;hudSec=-1}
 function hudHide(){$('hud').classList.add('fade')}
 function updateHUD(){
   if(state!=='play'&&state!=='countdown')return;
+  if(mode!=='birthday'){
+    if(mode==='endless'){const sec=Math.floor(tGame);if(sec!==hudSec){hudSec=sec;elTime.textContent=sec;elTime.classList.remove('warn')}}
+    if(hudDirty){hudDirty=false;$('scoreChip').textContent='⭐ '+score+' 分';$('lives').textContent='❤️'.repeat(lives)+'🖤'.repeat(3-lives);
+      if(mode==='tutorial')$('stageChip').textContent='🎓 '+'●'.repeat(Math.min(tut.step,TUT_STEPS-1))+'○'.repeat(Math.max(0,TUT_STEPS-1-tut.step));
+      else{const st=STAGES[p.stage];$('stageChip').textContent=st.icon+' '+st.name;let f,t;
+        if(p.stage===0){f=eaten/CFG.WALK_AT;t='再食 '+(CFG.WALK_AT-eaten)+' 樣就識行！'}
+        else if(p.stage===1){f=(eaten-CFG.WALK_AT)/(CFG.RUN_AT-CFG.WALK_AT);t='再食 '+Math.max(0,CFG.RUN_AT-eaten)+' 樣就識跑！'}
+        else{f=1;t='跑跑跑！衝呀～ 💨'}
+        $('evoFill').style.width=(clamp(f,0,1)*100)+'%';$('evoTxt').textContent=t}}
+    return;
+  }
   const prog=clamp(1-timeLeft/CFG.DURATION,0,1);
   if(Math.abs(prog-hudProg)>.002){hudProg=prog;elRunner.style.left='calc((100% - 6px) * '+prog.toFixed(4)+')';elFill.style.width=(prog*100).toFixed(2)+'%'}
   const sec=Math.max(0,Math.ceil(timeLeft));
@@ -1242,7 +1360,7 @@ function updateHUD(){
    手指拖動（Pointer Events）
    ========================================================= */
 cv.addEventListener('pointerdown',e=>{
-  if(state!=='play'||paused)return;e.preventDefault();
+  if(state!=='play'||paused||(mode==='tutorial'&&tut.lock))return;e.preventDefault();
   try{cv.setPointerCapture(e.pointerId)}catch(_){}
   const sp=proj(p.tx,0,p.tz);if(!sp)return;
   drag={id:e.pointerId,fx:e.clientX,fy:e.clientY,sx:sp.x,sy:sp.y,cam:camX};
@@ -1330,7 +1448,15 @@ $('fileIn').addEventListener('change',e=>{const f=e.target.files&&e.target.files
 /* =========================================================
    掣、背景、螢幕唔熄、自動更新
    ========================================================= */
-$('startBtn').addEventListener('click',()=>{if(photos.mom)startGame();else{initAudio();openCam(startGame)}});
+$('startBtn').addEventListener('click',()=>{mode='birthday';if(photos.mom)startGame();else{initAudio();openCam(startGame)}});
+$('tutBtn').addEventListener('click',()=>{mode='tutorial';startGame()});
+$('endlessBtn').addEventListener('click',()=>{mode='endless';startGame()});
+$('overAgain').addEventListener('click',()=>{initAudio();SFX.pop();restart()});
+$('overHome').addEventListener('click',()=>{SFX.pop();goHome()});
+$('tdBirthday').addEventListener('click',()=>{mode='birthday';$('tutDone').classList.add('hidden');if(photos.mom){initAudio();restart()}else{initAudio();openCam(()=>restart())}});
+$('tdEndless').addEventListener('click',()=>{mode='endless';$('tutDone').classList.add('hidden');initAudio();restart()});
+$('tdAgain').addEventListener('click',()=>{mode='tutorial';$('tutDone').classList.add('hidden');initAudio();restart()});
+$('tdHome').addEventListener('click',()=>{$('tutDone').classList.add('hidden');goHome()});
 $('pauseBtn').addEventListener('pointerdown',e=>{e.stopPropagation();pauseGame()});
 $('resumeBtn').addEventListener('click',resumeGame);
 $('homeBtn').addEventListener('click',goHome);
@@ -1358,7 +1484,7 @@ function checkUpdate(){
     location.replace(location.pathname+'?v='+m[1]);
   }).catch(()=>{});
 }
-function showBest(){$('bestTxt').textContent=bestScore>0?'🏆 最高分：'+bestScore+' 分':''}
+function showBest(){const a=[];if(bestScore>0)a.push('🎂 最高分 '+bestScore);if(bestEndless>0)a.push('♾️ 最高分 '+bestEndless);$('bestTxt').textContent=a.length?'🏆 '+a.join(' · '):''}
 
 /* ---- 開始 ---- */
 let lastT=0,renderDt=0;
@@ -1375,8 +1501,8 @@ setPhotoUI();
 requestAnimationFrame(frame);
 setTimeout(checkUpdate,1500);
 if(/[?&]test\b/.test(location.search))window.__gbTest={
-  get s(){return{state,eaten,score,bombs,poops,stage:p.stage,timeLeft,phase:fin&&fin.phase,foods:foods.length,parts:parts.length,mom:mom&&mom.z,zoom,endShown}},
-  start(){startGame()},sheet(v){sheetMode=v},auto(v){autoPilot=v},drop(k){p.tx=p.x;p.tz=p.z;spawnFood(p.x,p.z+STAGES[p.stage].speed*1.15+.5,k)},setTime(v){timeLeft=v},setEaten(v){eaten=v;checkEvolve();hudDirty=true}
+  get s(){return{state,mode,lives,tut:tut.step,eaten,score,bombs,poops,stage:p.stage,timeLeft,phase:fin&&fin.phase,foods:foods.length,parts:parts.length,mom:mom&&mom.z,zoom,endShown}},
+  start(m){if(m)mode=m;startGame()},sheet(v){sheetMode=v},auto(v){autoPilot=v},drop(k){p.tx=p.x;p.tz=p.z;spawnFood(p.x,p.z+STAGES[p.stage].speed*1.15+.5,k)},setTime(v){timeLeft=v},setEaten(v){eaten=v;checkEvolve();hudDirty=true}
 };
 })();
 </script>
