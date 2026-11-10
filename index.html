@@ -12,7 +12,7 @@
 <link rel="manifest" href="manifest.json">
 <title>雞髀大胃王 · 跑去抱媽咪</title>
 <!-- 上載前一定要改版本號（日期-次數），手機先會自動攞新版 -->
-<script>window.__GB_VER='2026-11-10-1';</script>
+<script>window.__GB_VER='2026-11-10-2';</script>
 <style>
 :root{--app-h:100vh;--pink:#ff5c8a;--pink2:#ff8fb1;--ink:#5a3b2e;--soft:#8a5a44}
 *{box-sizing:border-box;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
@@ -26,12 +26,13 @@ body{font-family:-apple-system,"PingFang HK","PingFang TC","Noto Sans CJK TC","N
 .card{background:rgba(255,255,255,.9);border-radius:26px;padding:16px 18px 14px;max-width:380px;width:100%;
   box-shadow:0 12px 34px rgba(170,60,95,.28);text-align:center;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
   max-height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch}
-.title{font-size:min(40px,10.5vw);font-weight:900;color:var(--pink);letter-spacing:2px;margin:2px 0 0;line-height:1.15;text-shadow:0 3px 0 #ffd0dd}
+.title{font-size:min(40px,10.5vw);font-weight:900;color:#e0286a;letter-spacing:2px;margin:2px 0 0;line-height:1.15;text-shadow:0 2px 0 #fff,0 4px 0 rgba(150,20,60,.28)}
 .title small{display:block;font-size:min(17px,4.4vw);letter-spacing:1px;color:var(--soft);text-shadow:none;margin-top:4px}
-.ribbon{display:inline-block;background:linear-gradient(90deg,#ff8fb1,#ffb36b);color:#fff;font-weight:900;padding:6px 16px;border-radius:999px;font-size:15px;box-shadow:0 3px 0 #e2668e;margin:8px 0 4px}
-.how{list-style:none;padding:0;margin:10px 0 6px;text-align:left;font-size:15px;line-height:1.45}
+.ribbon{display:inline-block;background:linear-gradient(90deg,#ec3f78,#ff7a3d);color:#fff;font-weight:900;text-shadow:0 1px 2px rgba(110,10,45,.55);padding:6px 16px;border-radius:999px;font-size:15px;box-shadow:0 3px 0 #e2668e;margin:8px 0 4px}
+.how{list-style:none;padding:0;margin:10px 0 6px;text-align:left;font-size:min(15px,3.9vw);line-height:1.45}
 .how li{display:flex;gap:8px;align-items:flex-start;padding:3px 0}
-.how b{color:var(--pink)}
+.how b{color:#d6246a;font-weight:900}
+.how b.bad{color:#c92a2a}
 .how .ic{flex:0 0 28px;text-align:center;font-size:19px}
 .photos{display:flex;justify-content:center;gap:22px;margin:8px 0 2px}
 .slot{position:relative;width:78px;cursor:pointer}
@@ -42,9 +43,9 @@ body{font-family:-apple-system,"PingFang HK","PingFang TC","Noto Sans CJK TC","N
 .slot.has .x{display:block}
 .note{font-size:12px;color:#a07862;margin:2px 0 0}
 .btn{appearance:none;-webkit-appearance:none;border:0;border-radius:999px;font:inherit;font-weight:900;cursor:pointer}
-.big{background:linear-gradient(180deg,#ff8fb1,#ff5c8a);color:#fff;font-size:25px;padding:13px 0;width:100%;box-shadow:0 5px 0 #d9416f;margin-top:12px;letter-spacing:2px}
+.big{background:linear-gradient(180deg,#ff6f9c,#e8336f);color:#fff;text-shadow:0 2px 0 rgba(140,10,50,.45);font-size:25px;padding:13px 0;width:100%;box-shadow:0 5px 0 #d9416f;margin-top:12px;letter-spacing:2px}
 .big:active{transform:translateY(3px);box-shadow:0 2px 0 #d9416f}
-.small{background:#fff;color:var(--pink);border:2px solid #ffb0c6;padding:8px 14px;font-size:15px}
+.small{background:#fff;color:#d6246a;border:2px solid #ff8fb1;padding:8px 14px;font-size:15px}
 .small:active{background:#fff0f5}
 .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px}
 .credit{font-size:12px;color:#a07862;margin-top:10px}
@@ -58,17 +59,21 @@ body{font-family:-apple-system,"PingFang HK","PingFang TC","Noto Sans CJK TC","N
 #runner{left:0;margin-left:-14px}
 #goal{right:-16px;border-color:#ff5c8a}
 #goal.call{animation:beat .6s infinite}
-#timeTxt{min-width:46px;text-align:center;font-weight:900;font-size:20px;color:#fff;background:#ff7aa2;border-radius:12px;padding:2px 6px;box-shadow:0 2px 0 #d9416f}
+#timeTxt{min-width:46px;text-align:center;font-weight:900;font-size:20px;color:#fff;background:#e8336f;border-radius:12px;padding:2px 6px;box-shadow:0 2px 0 #d9416f}
 #timeTxt.warn{background:#ff4d4d;animation:beat .5s infinite}
 #pauseBtn{pointer-events:auto;width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.88);font-size:17px;box-shadow:0 2px 4px rgba(0,0,0,.15);padding:0}
 .stageRow{display:flex;gap:8px;margin-top:10px;justify-content:center}
 .chip{background:rgba(255,255,255,.92);border-radius:999px;padding:4px 12px;font-weight:900;font-size:16px;box-shadow:0 2px 0 rgba(0,0,0,.08)}
-#countChip{color:var(--pink)}
+#scoreChip{color:#d6246a;font-size:21px;min-width:104px;text-align:center}
+#scoreChip.up{animation:pop .3s}
+#scoreChip.down{color:#e03131;animation:shake .4s}
+@keyframes pop{40%{transform:scale(1.2)}}
+@keyframes shake{20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
 .evo{position:relative;margin:8px auto 0;max-width:290px;height:22px;background:rgba(255,255,255,.78);border-radius:999px;overflow:hidden;border:2px solid #fff}
 #evoFill{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#9be89b,#3cc8a0);transition:width .25s}
 #evoTxt{position:relative;display:block;text-align:center;font-size:13px;font-weight:900;line-height:18px;color:var(--ink)}
 #banner{position:absolute;left:0;right:0;top:34%;text-align:center;font-size:42px;font-weight:900;color:#fff;
-  -webkit-text-stroke:2px #ff5c8a;text-shadow:0 4px 0 #ff5c8a,0 8px 18px rgba(255,92,138,.55);pointer-events:none;opacity:0;padding:0 16px;line-height:1.25}
+  text-shadow:-3px -3px 0 #c2185b,3px -3px 0 #c2185b,-3px 3px 0 #c2185b,3px 3px 0 #c2185b,0 -3px 0 #c2185b,0 3px 0 #c2185b,-3px 0 0 #c2185b,3px 0 0 #c2185b,0 7px 0 #8e1043,0 10px 20px rgba(0,0,0,.3);pointer-events:none;opacity:0;padding:0 16px;line-height:1.25}
 #banner.show{animation:bannerPop 1.7s ease-out forwards}
 @keyframes bannerPop{0%{opacity:0;transform:scale(.3)}12%{opacity:1;transform:scale(1.15)}22%{transform:scale(1)}75%{opacity:1}100%{opacity:0;transform:translateY(-24px)}}
 @keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
@@ -76,12 +81,17 @@ body{font-family:-apple-system,"PingFang HK","PingFang TC","Noto Sans CJK TC","N
 #end .card{animation:slideUp .7s cubic-bezier(.2,1.25,.4,1) both}
 @keyframes slideUp{from{transform:translateY(110%)}to{transform:none}}
 .endPhotos{display:flex;align-items:center;justify-content:center;gap:10px}
-.endPhotos .pic{width:64px;height:64px;border-radius:50%;border:3px solid #ff7aa2;background:#fff center/cover no-repeat;display:flex;align-items:center;justify-content:center;font-size:32px}
+.endPhotos .pic{width:54px;height:54px;border-radius:50%;border:3px solid #ff7aa2;background:#fff center/cover no-repeat;display:flex;align-items:center;justify-content:center;font-size:32px}
 .endPhotos .pic.photo{font-size:0}
 .endPhotos .hrt{font-size:30px;animation:beat .8s infinite}
-.endTitle{font-size:30px;font-weight:900;color:var(--pink);margin:8px 0 4px;text-shadow:0 2px 0 #ffd0dd}
+.endTitle{font-size:28px;font-weight:900;color:#e0286a;margin:6px 0 0;text-shadow:0 2px 0 #fff,0 3px 0 rgba(150,20,60,.25)}
+.bigScore{font-size:min(76px,19vw);font-weight:900;color:#e0286a;line-height:1;margin:6px 0 0;font-variant-numeric:tabular-nums;text-shadow:0 3px 0 #fff,0 6px 0 rgba(150,20,60,.3)}
+.bigScore small{font-size:.36em;margin-left:4px}
+#newRec{display:inline-block;background:#ffd23f;color:#6b3f00;font-weight:900;border-radius:999px;padding:3px 14px;font-size:16px;margin-top:6px;animation:beat .7s infinite}
 .endStats{font-size:15px;font-weight:800;margin:4px 0}
 .wish{font-size:15px;line-height:1.55;margin:8px 0 2px;color:var(--soft)}
+@media (max-height:700px){.slot .pic{width:52px;height:52px;font-size:24px}.how{margin:6px 0 4px;line-height:1.35}.how li{padding:1px 0}
+  .big{padding:10px 0;margin-top:8px;font-size:22px}.ribbon{margin:6px 0 2px}.row{margin-top:6px}.photos{margin:4px 0 0}.title{font-size:min(34px,9vw)}}
 #toast{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom) + 24px);transform:translateX(-50%);background:rgba(90,59,46,.92);color:#fff;
   padding:9px 16px;border-radius:999px;font-size:14px;font-weight:700;opacity:0;visibility:hidden;transition:opacity .3s;white-space:nowrap;pointer-events:none}
 #toast.show{opacity:1;visibility:visible}
@@ -98,8 +108,8 @@ body{font-family:-apple-system,"PingFang HK","PingFang TC","Noto Sans CJK TC","N
       <div id="timeTxt">60</div>
       <button class="btn" id="pauseBtn" aria-label="暫停">⏸</button>
     </div>
-    <div class="stageRow"><div class="chip" id="stageChip">🍼 BB 爬爬</div><div class="chip" id="countChip">😋 0</div></div>
-    <div class="evo"><div id="evoFill"></div><span id="evoTxt">再食 15 樣就識行！</span></div>
+    <div class="stageRow"><div class="chip" id="stageChip">🍼 BB 爬爬</div><div class="chip" id="scoreChip">⭐ 0 分</div></div>
+    <div class="evo"><div id="evoFill"></div><span id="evoTxt">再食 18 樣就識行！</span></div>
   </div>
   <div id="banner"></div>
 
@@ -109,7 +119,8 @@ body{font-family:-apple-system,"PingFang HK","PingFang TC","Noto Sans CJK TC","N
       <div class="ribbon">🎂 二家姐生日快樂 🎂</div>
       <ul class="how">
         <li><span class="ic">👆</span><span>手指<b>拖住雞髀</b>，左右前後咁行</span></li>
-        <li><span class="ic">🍓</span><span>食晒天上<b>跌落嚟</b>嘅好嘢，🎂 一個當三個</span></li>
+        <li><span class="ic">🍓</span><span>食跌落嚟嘅好嘢 <b>+10</b>，連續食分更多；🎂 <b>+50</b></span></li>
+        <li><span class="ic">💣</span><span>避開<b class="bad">炸彈 −50</b>（會暈）同<b class="bad">屎 💩 −30</b>（會行慢）</span></li>
         <li><span class="ic">👣</span><span>食得多就會<b>由爬變行，再變跑</b></span></li>
         <li><span class="ic">🤗</span><span>60 秒後，雞髀會<b>跑去抱媽咪</b></span></li>
       </ul>
@@ -139,6 +150,8 @@ body{font-family:-apple-system,"PingFang HK","PingFang TC","Noto Sans CJK TC","N
     <div class="card">
       <div class="endPhotos"><div class="pic" id="endKid">👶</div><div class="hrt">❤️</div><div class="pic" id="endMom">👩</div></div>
       <div class="endTitle">🎂 媽咪生日快樂！</div>
+      <div class="bigScore"><span id="endScore">0</span><small>分</small></div>
+      <div id="newRec" class="hidden">🏆 新紀錄！</div>
       <div class="endStats" id="endStats"></div>
       <p class="wish">祝二家姐生日快樂、身體健康、天天開心！<br>雞髀快高長大，日日都咁攬實媽咪 ❤️</p>
       <div class="row"><button class="btn small" id="againBtn">🔁 再玩一次</button><button class="btn small" id="songBtn">🎵 再唱生日歌</button></div>
@@ -165,7 +178,7 @@ const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
 /* =========================================================
    設定：名、時間、幾多樣先識行／識跑、雞髀鍾意食嘅嘢
    ========================================================= */
-const CFG={KID:'雞髀',MOM:'媽咪',DURATION:60,WALK_AT:15,RUN_AT:40};
+const CFG={KID:'雞髀',MOM:'媽咪',DURATION:60,WALK_AT:18,RUN_AT:50};
 const FOODS=[
   {e:'🍎',n:'蘋果'},{e:'🍌',n:'香蕉'},{e:'🍓',n:'士多啤梨'},{e:'🍇',n:'提子'},
   {e:'🍉',n:'西瓜'},{e:'🌽',n:'粟米'},{e:'🍠',n:'蕃薯'},{e:'🧀',n:'芝士'},
@@ -173,11 +186,13 @@ const FOODS=[
   {e:'🍙',n:'飯糰'},{e:'🥚',n:'蛋蛋'},{e:'🍊',n:'橙'}
 ];
 const BONUS={e:'🎂',n:'生日蛋糕'};
-const YUM=['好食！','啊嗚～','仲要！','好味道！','食晒佢！','yummy！'];
+const PTS={food:10,cake:50,bomb:-50,poop:-30};   // 分數：好嘢、蛋糕、炸彈、屎
+const HAZ={bomb:{e:'💣',n:'炸彈'},poop:{e:'💩',n:'屎'}};
+const HAZ_RATE=[.24,.34,.44];                     // 每次跌嘢係扣分物品嘅機會（爬、行、跑）
 const STAGES=[
-  {name:'BB 爬爬',icon:'🍼',speed:3.6,steer:7, cad:1.6,spawn:.85,z0:12},
-  {name:'學行行', icon:'👣',speed:6.5,steer:10,cad:2.2,spawn:.72,z0:17},
-  {name:'跑跑跑', icon:'💨',speed:11, steer:14,cad:3.4,spawn:.55,z0:24}
+  {name:'BB 爬爬',icon:'🍼',speed:4,  steer:7, cad:1.6,spawn:.8, z0:12},
+  {name:'學行行', icon:'👣',speed:7.2,steer:10,cad:2.2,spawn:.66,z0:17},
+  {name:'跑跑跑', icon:'💨',speed:12, steer:14,cad:3.4,spawn:.5, z0:24}
 ];
 
 /* ---- 禁止雙指放大、雙擊放大、長按選單 ---- */
@@ -255,7 +270,12 @@ const SFX={
   whoosh(){noiseHit(now(),.6,{freq:350,freqTo:3200,q:1.2,vol:.16,attack:.18})},
   hug(){const t=now();[60,64,67,72,76].forEach((m,i)=>tone(mf(m),t+i*.06,1.6,{type:'triangle',vol:.07}))},
   cheer(){const t=now();for(let i=0;i<55;i++)noiseHit(t+Math.random()*1.6,.04+Math.random()*.04,{freq:1500+Math.random()*2500,q:2,vol:.03+Math.random()*.05})},
-  pop(){tone(700,now(),.09,{vol:.08,glide:1300})}
+  pop(){tone(700,now(),.09,{vol:.08,glide:1300})},
+  boom(){const t=now();noiseHit(t,.7,{ftype:'lowpass',freq:1200,freqTo:90,vol:.7,attack:.004});tone(130,t,.55,{vol:.55,glide:32});
+    tone(mf(67),t+.25,.16,{type:'triangle',vol:.08});tone(mf(62),t+.42,.32,{type:'triangle',vol:.08})},
+  splat(){const t=now();noiseHit(t,.2,{ftype:'lowpass',freq:520,vol:.45});tone(320,t+.02,.4,{type:'sawtooth',vol:.06,glide:80,lp:700});
+    tone(mf(64),t+.3,.14,{type:'triangle',vol:.07});tone(mf(60),t+.45,.3,{type:'triangle',vol:.07})},
+  count1(){tone(mf(96),now(),.03,{type:'square',vol:.018,lp:5000})}
 };
 /* ---- 背景音樂：原創旋律，階段越高越快、越多樂器 ---- */
 const CH=[[48,60,64,67],[45,57,60,64],[41,57,60,65],[43,55,59,62]];
@@ -328,10 +348,11 @@ const cloudSpr=(()=>{const c=document.createElement('canvas');c.width=230;c.heig
    ========================================================= */
 let state='attract',paused=false,T=0;
 let tGame=0,timeLeft=CFG.DURATION,speed=0;
-const p={x:0,z:.8,tx:0,tz:.8,stage:0,ph:0,chomp:0,glow:0,lean:0,vx:0};
+const p={x:0,z:.8,tx:0,tz:.8,stage:0,ph:0,chomp:0,glow:0,lean:0,vx:0,stun:0,slow:0,inv:0};
 const foods=[],decos=[],flags=[],parts=[],pops=[],confetti=[],clouds=[],skyBal=[];
 let decoNext=-3,flagNext=14,flagType=0,dustT=0;
-let eaten=0,combo=0,lastEat=-9,spawnT=1,bonusT=9,best=+(LS.get('gb-best')||0);
+let eaten=0,score=0,bombs=0,poops=0,combo=0,lastEat=-9,spawnT=1,bonusT=9,bestScore=+(LS.get('gb-best-score')||0);
+let shake=0,flashRed=false,stinkT=0;
 let mom=null,fin=null,cd=null,zoom=1,zE=0,endShown=false;
 let drag=null,dragDist=0,hintOn=false,flashA=0,lastTick=99,autoPilot=false,hudDirty=true;
 const photos={kid:null,mom:null};
@@ -347,16 +368,26 @@ function spawnDeco(z){for(const sd of [-1,1]){if(Math.random()<.22)continue;cons
   decos.push({z:z+rand(-.5,.5),x:sd*(RW+CURB+off),t,sz:t.sz*rand(.85,1.15),ph:Math.random()*TAU})}}
 
 /* ---- 食物 ---- */
-function spawnFood(x,z,bonus){
-  const f=bonus?BONUS:pick(FOODS);
+// kind：冇／false ＝ 好嘢；true ＝ 生日蛋糕；'bomb'／'poop' ＝ 扣分物品
+function spawnFood(x,z,kind){
+  const bonus=kind===true,haz=typeof kind==='string'?kind:null,f=haz?HAZ[haz]:bonus?BONUS:pick(FOODS);
   foods.push({f,x:clamp(x,-XLIM,XLIM),z,h:topHeightAt(z)+rand(.5,3),vh:-rand(1,4),b:0,st:0,rot:rand(-.4,.4),vr:rand(-3,3),a:1,sq:0,
-    sz:bonus?1.25:1,bonus:!!bonus,t:0,k:1});
+    sz:bonus?1.25:haz?1.05:1,bonus,haz,t:0,k:1});
 }
-function aimX(){return Math.random()<.25?p.x+rand(-1.4,1.4):rand(-XLIM,XLIM)}
+// 好嘢多數跌喺離雞髀遠啲嘅位（要拖先食到）；扣分物品一半瞄準雞髀
+function aimX(){if(Math.random()<.12)return rand(-XLIM,XLIM);let x=0;for(let i=0;i<6;i++){x=rand(-XLIM,XLIM);if(Math.abs(x-p.x)>1.1)break}return x}
+function hazX(){return Math.random()<.5?p.x+rand(-.7,.7):rand(-XLIM,XLIM)}
+function pickHaz(){return Math.random()<(p.stage===2?.6:.45)?'bomb':'poop'}
 function spawnWave(){
   const st=STAGES[p.stage],z0=st.z0,r=Math.random();
-  if(p.stage>0&&r<.22){const x=aimX();for(let i=0;i<3;i++)spawnFood(x,z0+i*2.2)}
-  else if(p.stage>0&&r<.36){const dir=Math.random()<.5?-1:1;for(let i=0;i<4;i++)spawnFood(dir*(-2+i*1.33),z0+i*1.6)}
+  if(Math.random()<HAZ_RATE[p.stage]){
+    const n=p.stage===2&&Math.random()<.4?2:1;
+    for(let i=0;i<n;i++)spawnFood(hazX()+(i?rand(-1.5,1.5):0),z0+rand(-1.5,1.5)+i*2.4,pickHaz());
+    return;
+  }
+  if(p.stage>0&&r<.22){const x=aimX(),mid=Math.random()<.35;for(let i=0;i<3;i++)spawnFood(x,z0+i*2.2,mid&&i===1?pickHaz():false)}
+  else if(p.stage>0&&r<.36){const dir=Math.random()<.5?-1:1,bad=Math.random()<.35?1+(Math.random()*2|0):-1;
+    for(let i=0;i<4;i++)spawnFood(dir*(-2+i*1.33),z0+i*1.6,i===bad?pickHaz():false)}
   else if(p.stage===0&&r<.25){const x=aimX();spawnFood(x,z0);spawnFood(x+rand(-1.2,1.2),z0+2.5)}
   else spawnFood(aimX(),z0+rand(-2,2));
 }
@@ -367,11 +398,29 @@ function eat(f){
   for(let i=0;i<7;i++)addPart({type:'dot',x:sp.x,y:sp.y,vx:rand(-90,90),vy:rand(-170,-40),g:420,life:rand(.35,.6),max:.6,r:rand(2,4),col:pick(['#ffd23f','#ff9f43','#ff6b81','#ffffff'])});
   if(state!=='play')return;
   eaten+=f.bonus?3:1;combo=(tGame-lastEat<1.2)?combo+1:1;lastEat=tGame;
+  const pts=f.bonus?PTS.cake:PTS.food+Math.min(combo-1,10)*2;addScore(pts);
   SFX.chomp(combo);if(f.bonus)SFX.bonus();
   addPart({type:'spr',ch:'✨',x:sp.x+rand(-14,14),y:sp.y-6,vx:0,vy:-40,g:0,life:.5,max:.5,size:22,rot:0,vr:0});
-  addPop(sp.x,sp.y-14,f.bonus?'🎂 生日蛋糕！+3':f.f.n+'！'+pick(YUM),f.bonus?'#ff3d7f':'#ff7a3c',f.bonus?24:19);
-  if(combo===3||combo===5||(combo>=10&&combo%5===0))addPop(sp.x,sp.y-14,'連續食 ×'+combo+'！','#7a5cff',18);
+  addPop(sp.x,sp.y-14,f.bonus?'🎂 生日蛋糕！+'+pts:f.f.n+'！+'+pts,f.bonus?'#d6246a':'#e8590c',f.bonus?24:20);
+  if(combo===3||combo===5||(combo>=10&&combo%5===0))addPop(sp.x,sp.y-14,'連續食 ×'+combo+'！','#5f3dc4',18);
   checkEvolve();hudDirty=true;
+}
+function addScore(v){
+  score=Math.max(0,score+v);hudDirty=true;
+  const c=$('scoreChip');c.classList.remove('up','down');void c.offsetWidth;c.classList.add(v>=0?'up':'down');
+}
+function hit(f){
+  f.a=0;combo=0;const sp=proj(p.x,headH()*.7,p.z);
+  if(f.haz==='bomb'){
+    bombs++;addScore(PTS.bomb);p.stun=1;p.inv=1.6;shake=.5;flashA=.45;flashRed=true;SFX.boom();
+    if(sp){addPart({type:'spr',ch:'💥',x:sp.x,y:sp.y,vx:0,vy:-20,g:0,life:.55,max:.55,size:sp.s*1.7,rot:0,vr:0});
+      for(let i=0;i<10;i++)addPart({type:'puff',x:sp.x,y:sp.y,vx:rand(-150,150),vy:rand(-170,10),g:120,life:rand(.5,.9),max:.9,r:sp.s*.12,grow:sp.s*.4,col:'rgba(85,75,75,.55)'});
+      addPop(sp.x,sp.y-20,'💣 嘭！'+PTS.bomb,'#c92a2a',26)}
+  }else{
+    poops++;addScore(PTS.poop);p.slow=1.8;p.inv=1.2;shake=.18;SFX.splat();
+    if(sp){for(let i=0;i<8;i++)addPart({type:'puff',x:sp.x,y:sp.y,vx:rand(-90,90),vy:rand(-120,-30),g:0,life:rand(.6,1),max:1,r:sp.s*.1,grow:sp.s*.3,col:'rgba(140,185,60,.5)'});
+      addPop(sp.x,sp.y-20,'💩 臭臭！'+PTS.poop,'#8a5300',24)}
+  }
 }
 function addPop(x,y,txt,col,size){
   for(const q of pops)q.y-=size+6;
@@ -382,7 +431,7 @@ function checkEvolve(){
   if(p.stage===1&&eaten>=CFG.RUN_AT)evolve(2,CFG.KID+'識跑喇！💨');
 }
 function evolve(n,msg){
-  p.stage=n;p.glow=1.2;Music.stage=n;SFX.levelup();banner(msg);flashA=.55;hudDirty=true;
+  p.stage=n;p.glow=1.2;Music.stage=n;SFX.levelup();banner(msg);flashA=.55;flashRed=false;hudDirty=true;
   const sp=proj(p.x,.7,p.z);if(!sp)return;
   for(let i=0;i<18;i++){const a=i/18*TAU;addPart({type:'spr',ch:i%3?'⭐':'💖',x:sp.x,y:sp.y,vx:Math.cos(a)*rand(120,230),vy:Math.sin(a)*rand(120,230)-60,g:200,life:rand(.7,1.05),max:1.05,size:rand(14,22),rot:0,vr:rand(-4,4)})}
 }
@@ -392,8 +441,8 @@ function evolve(n,msg){
    ========================================================= */
 function resetGame(){
   foods.length=0;parts.length=0;pops.length=0;confetti.length=0;
-  eaten=0;combo=0;lastEat=-9;tGame=0;timeLeft=CFG.DURATION;
-  Object.assign(p,{x:0,z:.8,tx:0,tz:.8,stage:0,chomp:0,glow:0,lean:0,vx:0});
+  eaten=0;score=0;bombs=0;poops=0;combo=0;lastEat=-9;tGame=0;timeLeft=CFG.DURATION;shake=0;
+  Object.assign(p,{x:0,z:.8,tx:0,tz:.8,stage:0,chomp:0,glow:0,lean:0,vx:0,stun:0,slow:0,inv:0});
   speed=0;spawnT=.6;bonusT=rand(8,11);mom=null;fin=null;cd=null;zoom=1;zE=0;endShown=false;lastTick=99;dragDist=0;drag=null;
   Music.stage=0;hudDirty=true;flashA=0;
 }
@@ -419,7 +468,7 @@ function resumeGame(){
   paused=false;$('pauseScr').classList.add('hidden');initAudio();keepAwake();
 }
 function startFinale(){
-  state='finale';fin={t:0,phase:0,said:0,hugT:0,jt:0,heartT:0,songAt:-1};drag=null;hintOn=false;
+  state='finale';fin={t:0,phase:0,said:0,hugT:0,jt:0,heartT:0,songAt:-1};drag=null;hintOn=false;p.stun=p.slow=p.inv=0;
   banner('時間到！');SFX.whistle();hudHide();$('muteBtn').classList.remove('hidden');
   prune(flags,f=>f.z<30);
 }
@@ -427,7 +476,6 @@ function onHug(){
   SFX.hug();SFX.cheer();banner('抱抱！❤️');fin.songAt=.8;
   const c=hugPoint();for(let i=0;i<14;i++)heart(c.x,c.y,true);
   for(let i=0;i<90;i++)confetti.push(newConf(true));
-  if(eaten>best){best=eaten;LS.set('gb-best',String(best))}
 }
 function hugPoint(){const sp=proj(0,1.55*CHAR,mom?mom.z:MOM_STOP);return sp||{x:W/2,y:H/2,s:k}}
 function heart(x,y,burst){
@@ -437,8 +485,19 @@ function heart(x,y,burst){
 function zoomTarget(){const momPx=3.2*CHAR*sAt(MOM_STOP);return clamp(H*.4/momPx,1,2.8)}
 function showEnd(){
   endShown=true;
-  $('endStats').textContent=CFG.KID+'今次食咗 '+eaten+' 樣好嘢，由爬爬、行行到跑跑，一路衝去抱'+CFG.MOM+'！';
-  $('end').classList.remove('hidden');
+  const rec=score>bestScore;if(rec){bestScore=score;LS.set('gb-best-score',String(score))}
+  $('newRec').classList.add('hidden');
+  $('endStats').textContent='食咗 '+eaten+' 樣好嘢 · 💣 中咗 '+bombs+' 次 · 💩 中咗 '+poops+' 次';
+  $('endScore').textContent='0';$('end').classList.remove('hidden');
+  countUp(score,rec);
+}
+let cuRaf=0;
+function countUp(target,rec){
+  const el=$('endScore'),t0=performance.now(),dur=1500;let shown=-1,lastTick=0;cancelAnimationFrame(cuRaf);
+  const step=t=>{const e=Math.min(1,(t-t0)/dur),v=Math.round(target*(1-Math.pow(1-e,3)));
+    if(v!==shown){shown=v;el.textContent=v;if(t-lastTick>70){lastTick=t;SFX.count1()}}
+    if(e<1)cuRaf=requestAnimationFrame(step);else if(rec&&target>0){$('newRec').classList.remove('hidden');SFX.bonus()}};
+  cuRaf=requestAnimationFrame(step);
 }
 
 /* ---- 每格更新 ---- */
@@ -477,6 +536,7 @@ function update(dt){
   for(const c of confetti){c.y+=c.vy*dt;c.x+=(c.vx+Math.sin(T*2.4+c.sw)*36)*dt;c.rot+=c.vr*dt}
   prune(confetti,c=>c.y<H+30);
   if(flashA>0)flashA=Math.max(0,flashA-dt*1.6);
+  if(shake>0)shake=Math.max(0,shake-dt);
   camX+=(p.x*.35-camX)*Math.min(1,dt*3);
   updateHUD();
 }
@@ -517,8 +577,13 @@ function updFinale(dt){
 function newConf(burst){return{x:rand(0,W),y:burst?rand(-H*.5,-10):-20,vx:rand(-20,20),vy:rand(70,150),rot:rand(0,TAU),vr:rand(-6,6),
   col:pick(['#ff5c8a','#ffd23f','#5cc8ff','#8be28b','#a98bff','#ff9f43']),w:rand(6,10),h:rand(10,16),sw:rand(0,TAU)}}
 function autopilot(){
-  let best=null;for(const f of foods){if(f.st===2||f.z<p.z-.3)continue;if(!best||f.z<best.z)best=f}
-  if(best){p.tx=clamp(best.x,-XLIM,XLIM);p.tz=clamp(best.z<5?best.z:.8,ZMIN,ZMAX)}else{p.tx=0;p.tz=.8}
+  let best=null;
+  for(const f of foods){if(f.st!==0||f.haz||f.z<p.z-.3)continue;
+    if(foods.some(h=>h.haz&&h.a>0&&Math.abs(h.x-f.x)<.9&&Math.abs(h.z-f.z)<2))continue;
+    if(!best||f.z<best.z)best=f}
+  let tx=best?best.x:0;const tz=best&&best.z<5?best.z:.8;
+  for(const h of foods)if(h.haz&&h.a>0&&h.z>p.z-.6&&h.z<p.z+3.5&&Math.abs(h.x-tx)<.95)tx=h.x+(tx>=h.x?1.2:-1.2);
+  p.tx=clamp(tx,-XLIM,XLIM);p.tz=clamp(tz,ZMIN,ZMAX);
 }
 function updatePlayer(dt){
   const st=STAGES[p.stage],ox=p.x;
@@ -526,11 +591,14 @@ function updatePlayer(dt){
   if(state==='finale'){
     if(fin.phase<=1){p.tx=0;p.tz=1.2;moveTo(6*dt)}
     else if(fin.phase===2){p.x=lerp(p.x,0,Math.min(1,dt*4));p.z+=4.2*dt;if(p.z>=mom.z-.9){p.z=mom.z-.9;fin.phase=3;fin.jt=0;SFX.boing()}}
-  }else if(state!=='countdown')moveTo(st.steer*dt);
+  }else if(state!=='countdown')moveTo(st.steer*dt*(p.stun>0?0:p.slow>0?.35:1));
   p.vx=(p.x-ox)/Math.max(dt,1e-3);
   p.lean=lerp(p.lean,clamp(p.vx*.03,-.2,.2),Math.min(1,dt*8));
   p.ph+=TAU*(state==='countdown'?.5:st.cad)*dt;
   if(p.chomp>0)p.chomp-=dt;if(p.glow>0)p.glow-=dt;
+  if(p.stun>0)p.stun-=dt;if(p.inv>0)p.inv-=dt;
+  if(p.slow>0){p.slow-=dt;stinkT-=dt;if(stinkT<=0){stinkT=.12;const sp=proj(p.x+rand(-.3,.3),headH()*.9,p.z);
+    if(sp)addPart({type:'puff',x:sp.x,y:sp.y,vx:rand(-20,20),vy:rand(-60,-30),g:0,life:.7,max:.7,r:sp.s*.07,grow:sp.s*.22,col:'rgba(140,185,60,.5)'})}}
   if(p.stage===2&&speed>3&&(state==='play'||(fin&&fin.phase<3))){dustT-=dt;if(dustT<=0){dustT=.07;const sp=proj(p.x+rand(-.25,.25),0,p.z);
     if(sp)addPart({type:'puff',x:sp.x,y:sp.y,vx:rand(-30,30),vy:rand(40,90),g:0,life:.45,max:.45,r:sp.s*.12,grow:sp.s*.55})}}
 }
@@ -545,7 +613,8 @@ function updateFoods(dt){
     else f.rot=lerp(f.rot,0,Math.min(1,dt*3));
     if(f.sq>0)f.sq=Math.max(0,f.sq-dt*5);
     if(fin)f.a-=dt*1.6;
-    else if(canEat&&Math.abs(f.z-p.z)<.75&&Math.abs(f.x-p.x)<.9&&f.h<2.6)eat(f);
+    else if(canEat&&f.haz){if(state==='play'&&p.inv<=0&&Math.abs(f.z-p.z)<.55&&Math.abs(f.x-p.x)<.62&&f.h<2.2)hit(f)}
+    else if(canEat&&Math.abs(f.z-p.z)<.65&&Math.abs(f.x-p.x)<.75&&f.h<2.6)eat(f);
   }
   prune(foods,f=>f.st===2?f.t<.2:(f.z>-2.5&&f.a>0));
 }
@@ -702,9 +771,9 @@ function drawMomGroup(){
 function bubble(sp,txt){
   if(!sp)return;const fs=Math.max(12,Math.min(20,sp.s*.42));ctx.font='900 '+fs+'px '+UIF;
   const w=ctx.measureText(txt).width+fs*1.2,h=fs*1.8,x=sp.x-w*.18,y=sp.y-h;
-  rrPath(x,y,w,h,h/2);ctx.fillStyle='#fff';ctx.fill();ctx.lineWidth=2;ctx.strokeStyle='#ff8fb1';ctx.stroke();
+  rrPath(x,y,w,h,h/2);ctx.fillStyle='#fff';ctx.fill();ctx.lineWidth=2.5;ctx.strokeStyle='#e8336f';ctx.stroke();
   ctx.beginPath();ctx.moveTo(sp.x-6,y+h-1);ctx.lineTo(sp.x,y+h+8);ctx.lineTo(sp.x+6,y+h-1);ctx.fillStyle='#fff';ctx.fill();
-  ctx.fillStyle='#ff5c8a';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(txt,x+w/2,y+h/2+1);
+  ctx.fillStyle='#c2185b';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(txt,x+w/2,y+h/2+1);
 }
 const BAL=['#ff7aa2','#ffd23f','#7ad3ff','#a98bff','#7be0a6','#ffa45c'];
 function drawArch(z){
@@ -714,11 +783,13 @@ function drawArch(z){
     ctx.beginPath();ctx.arc(bx,by,r,0,TAU);ctx.fillStyle=BAL[i%BAL.length];ctx.fill();
     ctx.beginPath();ctx.arc(bx-r*.35,by-r*.35,r*.28,0,TAU);ctx.fillStyle='rgba(255,255,255,.55)';ctx.fill()}
   const bw=4.4*s*A,bh=.78*s*A,bx=X(0)-bw/2,by=Y(4.05);
-  rrPath(bx,by,bw,bh,bh*.3);ctx.fillStyle='#fff';ctx.fill();ctx.lineWidth=Math.max(1,s*.06);ctx.strokeStyle='#ff7aa2';ctx.stroke();
-  ctx.font='900 '+Math.max(6,.48*s*A)+'px '+UIF;ctx.fillStyle='#ff4f84';ctx.textAlign='center';ctx.textBaseline='middle';
+  rrPath(bx,by,bw,bh,bh*.3);ctx.fillStyle='#fff';ctx.fill();ctx.lineWidth=Math.max(1,s*.07);ctx.strokeStyle='#e8336f';ctx.stroke();
+  ctx.font='900 '+Math.max(6,.48*s*A)+'px '+UIF;ctx.fillStyle='#c2185b';ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.fillText(CFG.MOM+'生日快樂',X(0),by+bh*.53);
 }
-function shadow(sp,rx){ctx.fillStyle='rgba(90,60,40,.2)';ctx.beginPath();ctx.ellipse(sp.x,sp.y,Math.max(.5,rx*sp.s),Math.max(.3,rx*sp.s*.3),0,0,TAU);ctx.fill()}
+function outlineText(t,x,y,col){ctx.lineJoin='round';ctx.lineWidth=8;ctx.strokeStyle='rgba(80,15,40,.6)';ctx.strokeText(t,x,y);
+  ctx.lineWidth=4.5;ctx.strokeStyle='#fff';ctx.strokeText(t,x,y);ctx.fillStyle=col;ctx.fillText(t,x,y)}
+function shadow(sp,rx,col){ctx.fillStyle=col||'rgba(90,60,40,.2)';ctx.beginPath();ctx.ellipse(sp.x,sp.y,Math.max(.5,rx*sp.s),Math.max(.3,rx*sp.s*.3),0,0,TAU);ctx.fill()}
 
 /* =========================================================
    畫畫面
@@ -780,15 +851,16 @@ function drawFlag(fl){
     for(let i=0;i<N;i++){const t=(i+.5)/N,px=lerp(x0,x1,t),py=yt+4*sag*t*(1-t),sw=Math.sin(T*3+i)*fw*.15;
       ctx.beginPath();ctx.moveTo(px-fw,py);ctx.lineTo(px+fw,py);ctx.lineTo(px+sw,py+fh);ctx.closePath();ctx.fillStyle=BAL[i%BAL.length];ctx.fill()}
   }else{
-    const bh=.8*s,by=yt+.1*s;rrPath(x0+.1*s,by,x1-x0-.2*s,bh,bh*.25);ctx.fillStyle='#ff7aa2';ctx.fill();
+    const bh=.8*s,by=yt+.1*s;rrPath(x0+.1*s,by,x1-x0-.2*s,bh,bh*.25);ctx.fillStyle='#e8457e';ctx.fill();
     ctx.lineWidth=Math.max(1,.05*s);ctx.strokeStyle='#fff';ctx.stroke();
-    ctx.font='900 '+Math.max(5,.5*s)+'px '+UIF;ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText('🎂 生日快樂 🎂',(x0+x1)/2,by+bh*.54);
+    ctx.font='900 '+Math.max(5,.5*s)+'px '+UIF;ctx.textAlign='center';ctx.textBaseline='middle';ctx.lineJoin='round';
+    ctx.lineWidth=Math.max(1,.09*s);ctx.strokeStyle='rgba(120,10,50,.55)';ctx.strokeText('🎂 生日快樂 🎂',(x0+x1)/2,by+bh*.54);
+    ctx.fillStyle='#fff';ctx.fillText('🎂 生日快樂 🎂',(x0+x1)/2,by+bh*.54);
   }
   ctx.globalAlpha=1;
 }
 function drawFoodShadow(f){if(f.st===2)return;const sp=proj(f.x,0,f.z);if(!sp)return;const hf=Math.min(f.h/14,.75);
-  ctx.globalAlpha=f.a*(1-hf);shadow(sp,.36*f.sz*(1-hf*.6));ctx.globalAlpha=1}
+  ctx.globalAlpha=f.a*(1-hf);shadow(sp,.36*f.sz*(1-hf*.6),f.haz?'rgba(210,30,40,.32)':null);ctx.globalAlpha=1}
 function drawFood(f){
   const sp=proj(f.x,f.h+f.sz*.48,f.z);if(!sp)return;
   const size=f.sz*sp.s*(f.st===2?f.k:1);if(size<1)return;
@@ -796,18 +868,25 @@ function drawFood(f){
   if(f.bonus&&f.st!==2){const r=size*(.85+.12*Math.sin(T*8));const g=ctx.createRadialGradient(sp.x,sp.y,0,sp.x,sp.y,r);g.addColorStop(0,'rgba(255,240,150,.85)');g.addColorStop(1,'rgba(255,240,150,0)');ctx.fillStyle=g;ctx.fillRect(sp.x-r,sp.y-r,r*2,r*2)}
   ctx.save();ctx.translate(sp.x,sp.y);ctx.rotate(f.rot);if(f.sq>0)ctx.scale(1+f.sq*.25,1-f.sq*.25);
   ctx.drawImage(spr(f.f.e),-size*.625,-size*.625,size*1.25,size*1.25);ctx.restore();
+  if(f.haz==='bomb'){const r=size*.09*(1+.6*Math.abs(Math.sin(T*40)));ctx.fillStyle='#ffd23f';ctx.beginPath();ctx.arc(sp.x+size*.3,sp.y-size*.5,r,0,TAU);ctx.fill();
+    ctx.fillStyle='#ff6b00';ctx.beginPath();ctx.arc(sp.x+size*.3,sp.y-size*.5,r*.5,0,TAU);ctx.fill()}
+  else if(f.haz==='poop'){ctx.fillStyle='#333';for(let i=0;i<2;i++){const a=T*7+i*Math.PI;ctx.beginPath();ctx.arc(sp.x+Math.cos(a)*size*.55,sp.y-size*.45+Math.sin(a*1.3)*size*.15,Math.max(1.2,size*.045),0,TAU);ctx.fill()}}
   ctx.globalAlpha=1;
 }
 function drawPlayer(){
   const sp=proj(p.x,0,p.z);if(!sp)return;
   shadow(sp,(p.stage===0?.5:.38)*CHAR);
   if(p.glow>0){const r=sp.s*1.3*CHAR,c=proj(p.x,.65*CHAR,p.z),g=ctx.createRadialGradient(c.x,c.y,0,c.x,c.y,r);g.addColorStop(0,'rgba(255,250,200,'+Math.min(.9,p.glow)+')');g.addColorStop(1,'rgba(255,250,200,0)');ctx.fillStyle=g;ctx.fillRect(c.x-r,c.y-r,r*2,r*2)}
-  drawBaby(sp,p.stage===0?'crawl':p.stage===1?'walk':'run');
+  if(p.inv>0&&(T*14|0)%2)ctx.globalAlpha=.45;
+  drawBaby(sp,p.stage===0?'crawl':p.stage===1?'walk':'run');ctx.globalAlpha=1;
+  if(p.stun>0){const c=proj(p.x,headH()+.45*CHAR,p.z);if(c)for(let i=0;i<3;i++){const a=T*7+i*TAU/3,z=c.s*.32;
+    ctx.drawImage(spr(i?'⭐':'💫'),c.x+Math.cos(a)*c.s*.5-z*.6,c.y+Math.sin(a)*c.s*.16-z*.6,z*1.25,z*1.25)}}
 }
 const drawList=[];
 function render(){
   ctx.setTransform(DPR,0,0,DPR,0,0);
   ctx.fillStyle=skyGrad;ctx.fillRect(0,0,W,H);
+  if(shake>0){const m=shake*18;ctx.translate(rand(-m,m),rand(-m,m))}
   if(zoom!==1&&mom){const c=hugPoint(),ax=lerp(c.x,W/2,zE),ay=lerp(c.y,H*.33,zE);ctx.translate(ax,ay);ctx.scale(zoom,zoom);ctx.translate(-c.x,-c.y)}
   drawSky();
   hills(16,6,'#cbead0',3,.011,.027);hills(12,0,'#b6e2ad',6,.016,.041);
@@ -827,13 +906,13 @@ function render(){
   }
   for(const q of parts){const a=clamp(q.life/q.max,0,1);ctx.globalAlpha=a;
     if(q.type==='dot'){ctx.fillStyle=q.col;ctx.beginPath();ctx.arc(q.x,q.y,q.r,0,TAU);ctx.fill()}
-    else if(q.type==='puff'){ctx.fillStyle='rgba(255,255,255,.75)';ctx.beginPath();ctx.arc(q.x,q.y,q.r+(1-a)*q.grow,0,TAU);ctx.fill()}
+    else if(q.type==='puff'){ctx.fillStyle=q.col||'rgba(255,255,255,.75)';ctx.beginPath();ctx.arc(q.x,q.y,q.r+(1-a)*q.grow,0,TAU);ctx.fill()}
     else{ctx.save();ctx.translate(q.x,q.y);ctx.rotate(q.rot||0);ctx.drawImage(spr(q.ch),-q.size*.625,-q.size*.625,q.size*1.25,q.size*1.25);ctx.restore()}}
   ctx.globalAlpha=1;
   ctx.textAlign='center';ctx.textBaseline='middle';ctx.lineJoin='round';
   for(const q of pops){if(q.t<0)continue;const e=q.t/q.dur,sc=e<.15?.6+e/.15*.5:1.1-Math.min(.1,(e-.15));
     ctx.globalAlpha=e>.7?1-(e-.7)/.3:1;ctx.font='900 '+(q.size*sc)+'px '+UIF;const y=q.y-e*50;
-    ctx.lineWidth=5;ctx.strokeStyle='#fff';ctx.strokeText(q.txt,q.x,y);ctx.fillStyle=q.col;ctx.fillText(q.txt,q.x,y)}
+    outlineText(q.txt,q.x,y,q.col)}
   ctx.globalAlpha=1;
   ctx.setTransform(DPR,0,0,DPR,0,0);
   if(p.stage===2&&speed>5){ctx.strokeStyle='rgba(255,255,255,.55)';ctx.lineCap='round';
@@ -841,9 +920,9 @@ function render(){
       ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+side*6,y+46);ctx.stroke()}}
   if(hintOn&&state==='play'){const sp=proj(p.x,0,p.z);if(sp){const off=Math.sin(T*3)*26,sz=42;ctx.globalAlpha=.95;
     ctx.drawImage(spr('👆'),sp.x+off-sz*.4,sp.y+8,sz*1.25,sz*1.25);
-    ctx.font='900 18px '+UIF;ctx.lineWidth=5;ctx.strokeStyle='#fff';const ty=sp.y-sp.s*1.85*CHAR;ctx.strokeText('拖住'+CFG.KID+'行！',sp.x,ty);ctx.fillStyle='#ff5c8a';ctx.fillText('拖住'+CFG.KID+'行！',sp.x,ty);ctx.globalAlpha=1}}
+    ctx.font='900 19px '+UIF;ctx.textAlign='center';ctx.textBaseline='middle';outlineText('拖住'+CFG.KID+'行！',sp.x,sp.y-sp.s*1.85*CHAR,'#d6246a');ctx.globalAlpha=1}}
   for(const c of confetti){ctx.save();ctx.translate(c.x,c.y);ctx.rotate(c.rot);ctx.scale(1,Math.cos(T*5+c.sw));ctx.fillStyle=c.col;ctx.fillRect(-c.w/2,-c.h/2,c.w,c.h);ctx.restore()}
-  if(flashA>0){ctx.fillStyle='rgba(255,255,255,'+flashA+')';ctx.fillRect(0,0,W,H)}
+  if(flashA>0){ctx.fillStyle=(flashRed?'rgba(255,70,70,':'rgba(255,255,255,')+flashA+')';ctx.fillRect(0,0,W,H)}
 }
 
 /* =========================================================
@@ -859,7 +938,7 @@ function updateHUD(){
   if(Math.abs(prog-hudProg)>.002){hudProg=prog;elRunner.style.left='calc((100% - 6px) * '+prog.toFixed(4)+')';elFill.style.width=(prog*100).toFixed(2)+'%'}
   const sec=Math.max(0,Math.ceil(timeLeft));
   if(sec!==hudSec){hudSec=sec;elTime.textContent=sec;elTime.classList.toggle('warn',sec<=10);elGoal.classList.toggle('call',sec<=10)}
-  if(hudDirty){hudDirty=false;const st=STAGES[p.stage];$('stageChip').textContent=st.icon+' '+st.name;$('countChip').textContent='😋 '+eaten;
+  if(hudDirty){hudDirty=false;const st=STAGES[p.stage];$('stageChip').textContent=st.icon+' '+st.name;$('scoreChip').textContent='⭐ '+score+' 分';
     let f,t;
     if(p.stage===0){f=eaten/CFG.WALK_AT;t='再食 '+(CFG.WALK_AT-eaten)+' 樣就識行！'}
     else if(p.stage===1){f=(eaten-CFG.WALK_AT)/(CFG.RUN_AT-CFG.WALK_AT);t='再食 '+Math.max(0,CFG.RUN_AT-eaten)+' 樣就識跑！'}
@@ -951,7 +1030,7 @@ function checkUpdate(){
     location.replace(location.pathname+'?v='+m[1]);
   }).catch(()=>{});
 }
-function showBest(){$('bestTxt').textContent=best>0?'🏆 最高紀錄：食咗 '+best+' 樣':''}
+function showBest(){$('bestTxt').textContent=bestScore>0?'🏆 最高分：'+bestScore+' 分':''}
 
 /* ---- 開始 ---- */
 let lastT=0;
@@ -969,8 +1048,8 @@ setPhotoUI();
 requestAnimationFrame(frame);
 setTimeout(checkUpdate,1500);
 if(/[?&]test\b/.test(location.search))window.__gbTest={
-  get s(){return{state,eaten,stage:p.stage,timeLeft,phase:fin&&fin.phase,foods:foods.length,parts:parts.length,mom:mom&&mom.z,zoom,endShown}},
-  start(){startGame()},auto(v){autoPilot=v},setTime(v){timeLeft=v},setEaten(v){eaten=v;checkEvolve();hudDirty=true}
+  get s(){return{state,eaten,score,bombs,poops,stage:p.stage,timeLeft,phase:fin&&fin.phase,foods:foods.length,parts:parts.length,mom:mom&&mom.z,zoom,endShown}},
+  start(){startGame()},auto(v){autoPilot=v},drop(k){p.tx=p.x;p.tz=p.z;spawnFood(p.x,p.z+STAGES[p.stage].speed*1.15+.5,k)},setTime(v){timeLeft=v},setEaten(v){eaten=v;checkEvolve();hudDirty=true}
 };
 })();
 </script>
